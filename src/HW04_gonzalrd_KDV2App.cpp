@@ -65,12 +65,13 @@ void HW04_gonzalrd_KDV2App::setup()
 
 	star.build(mylocs,size);
 
-	Entry* BEST = star.getNearest(.534, .345);
+	Entry* BEST = star.getNearest(.634, .145);
 
 }
 
 void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 {
+
 }
 
 void HW04_gonzalrd_KDV2App::update()

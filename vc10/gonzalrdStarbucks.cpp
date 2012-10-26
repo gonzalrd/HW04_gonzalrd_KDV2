@@ -2,6 +2,18 @@
 #include "gonzalrdStarbucks.h"
 
 int size;
+
+//this is a recursive method - deteminres if two entries are the same and re
+bool gonzalrdStarbucks::compareEntries(Node*cur, Entry*data){
+
+}
+void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
+	if(xLevel){
+		
+		if(    ) //compate the data)
+	}
+
+}
 	
  void gonzalrdStarbucks::build(Entry* c, int n){
 		size =  n;
