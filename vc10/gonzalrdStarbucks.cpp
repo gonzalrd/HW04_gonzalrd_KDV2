@@ -5,10 +5,10 @@
 int size;
 
 //this is a recursive method - deteminres if two entries are the same and returns true if they are
-bool gonzalrdStarbucks::compareEntries(Entry*cur, Entry*data){
+bool gonzalrdStarbucks::compareEntries(Entry*cur, double x , double y){
 
-	double xoffset = abs(cur->x - data->x);
-	double yoffset = abs(cur->y - data->y);
+	double xoffset = abs(cur->x - x);
+	double yoffset = abs(cur->y - y);
 
 	if((xoffset < .00001) && (yoffset < .00001)) {return false;}
 
@@ -19,7 +19,7 @@ bool gonzalrdStarbucks::compareEntries(Entry*cur, Entry*data){
 void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 //handles the left side
 	if(xLevel){
-		if(!compareEntries(cur->data_, data)){ //compate the data)
+		if(!compareEntries(cur->data_, data->x, data->y)){ //compate the data)
 			if(xLevel){ //compare by x
 				if(cur->data_->x > data->x){
 					if(cur->leftChild_ == NULL){ 
@@ -34,7 +34,7 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 	}
 //handles the right side
 	if(xLevel){
-		if(!compareEntries(cur->data_, data)){ //compate the data)
+		if(!compareEntries(cur->data_, data->x, data->y)){ //compate the data)
 			if(xLevel){ //compare by x
 				if(cur->data_->x < data->x){
 					if(cur->rightChild_ == NULL)
@@ -52,7 +52,7 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 	//the y levels
 		//left condidtion
 		if(!xLevel){
-		if(!compareEntries(cur->data_, data)){ //compate the data)
+		if(!compareEntries(cur->data_, data->x, data->y)){ //compate the data)
 			if(xLevel){ //compare by y
 				if(cur->data_->y > data->y){
 					if(cur->leftChild_ == NULL)
@@ -69,7 +69,7 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 
 		//right condition
 		if(!xLevel){
-		if(!compareEntries(cur->data_, data)){ //compate the data)
+		if(!compareEntries(cur->data_, data->x, data->y)){ //compate the data)
 			if(xLevel){ //compare by y
 				if(cur->data_->y < data->y){
 					if(cur->rightChild_ == NULL)
@@ -95,7 +95,7 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 	 root->data_->y = .5;
 	 //this equals the root node
 	 entries = new Entry[n];
-
+	 
 	 for(int i = 0; i< n; i++){
 		 buildKD(root, &c[i], true); //alwasy want to start at the root.
 	 }
@@ -125,10 +125,45 @@ Entry*  gonzalrdStarbucks::getNearest(double x, double y){
 
 }
 
+double gonzalrdStarbucks::calculateDis(double x1, double x2, double y1, double y2){
+
+
+}
+
 Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
-	
+	Entry*candidate;
+	if(cur == NULL) return NULL;
+	if(compareEntries(cur->data_, x , y)) return cur->data_;
+	if(xLevel){
+		if(x < cur->data_->x){
+			if(cur->leftChild_ = NULL) cur->data_;
+			else if(x > cur->leftChild_->data_->x){//check if bigger than left child
+			//if yes then compare distance and return the closet one-do opposite for the right-before return
 
+			}
+			else
+			{ 
+				candidate = search(cur->leftChild_,x,y,false);
+			}
+			
+	}
+		else if(x > cur->data_->x){
+			if(cur->rightChild_ = NULL) return cur->data_;
+			else candidate = search(cur->rightChild_,x,y,false);
+		}
+	}
 
+	if(!xLevel){
+		if(y < cur->data_->y){
+			if(cur->leftChild_ = NULL) return cur->data_;
+			else candidate = search(cur->leftChild_,x,y,true);
+	}
+		else if(y > cur->data_->y){
+			if(cur->rightChild_ = NULL) return cur->data_;
+			else candidate = search(cur->rightChild_,x,y,true);
+		}
+	}
+		
 }
 
 
