@@ -24,6 +24,7 @@ class HW04_gonzalrd_KDV2App : public AppBasic {
 
 Entry* HW04_gonzalrd_KDV2App::read()
 {
+	size = 7656; //temporary solution
 	
 	Entry* entries = new Entry[size];
 	
@@ -36,6 +37,8 @@ Entry* HW04_gonzalrd_KDV2App::read()
 	
 	
 	while(!in.eof()){
+
+	//for(int i = 0; i<size; i++){
 	
 	getline(in , line, ',');
 	in.get();
@@ -59,11 +62,10 @@ Entry* HW04_gonzalrd_KDV2App::read()
 void HW04_gonzalrd_KDV2App::setup()
 {
 	gonzalrdStarbucks star;
-	size = 7655; //temporary solution
 
-	Entry* mylocs = read();
+	Entry*myLocs = read();
 
-	//star.build(mylocs,size);
+	star.build(myLocs,size-1);
 
 //	Entry* BEST = star.getNearest(.634, .145);
 

@@ -5,6 +5,7 @@ class Node
 {
 public:
 	Node();
+	
 
 	Node*leftChild_;
 
