@@ -87,12 +87,14 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 	
  void gonzalrdStarbucks::build(Entry* c, int n){
 //need to pick median and them remove from list
-	 Node*root; //this equals the root node
+	 Node*root = new Node();
+	 root->data_->identifier = "root node";
+	 root->data_->x = .5;
+	 root->data_->y = .5;
+	 //this equals the root node
 	 entries = new Entry[n];
 
-	 
 	 for(int i = 0; i< n; i++){
-		
 		 buildKD(root, &c[i], true); //alwasy want to start at the root.
 	 }
  }
