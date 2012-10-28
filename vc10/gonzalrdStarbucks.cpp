@@ -18,43 +18,40 @@ bool gonzalrdStarbucks::compareEntries(Entry*cur, double x , double y){
 
 void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 //handles the left side
-	if(xLevel){
-		if(!compareEntries(cur->data_, data->x, data->y)){ //compate the data)
-			if(xLevel){ //compare by x
-				if(cur->data_->x > data->x){
-					if(cur->leftChild_ == NULL){ 
+	if(compareEntries(cur->data_, data->x, data->y))
+	{
+	if(xLevel)
+	{
+		if(cur->data_->x > data->x){
+				if(cur->leftChild_ == NULL){ 
 						Node* newNode = new Node();
 						newNode->data_ = data;
 						cur-> leftChild_ = newNode;
 					}
-					else {buildKD(cur->leftChild_, data,false);}
+		else {buildKD(cur->leftChild_, data,false);}
 				}
-		}
-		}
-	}
-//handles the right side
-	if(xLevel){
-		if(!compareEntries(cur->data_, data->x, data->y)){ //compate the data)
-			if(xLevel){ //compare by x
-				if(cur->data_->x < data->x){
+
+	//Handle the right side
+	if(cur->data_->x < data->x){
 					if(cur->rightChild_ == NULL)
 						{ 
 						Node* newNode = new Node();
 						newNode->data_ = data;
-						cur-> rightChild_ = newNode;
+						cur-> rightChild_ = newNode; 
 						}
 					else {buildKD(cur->rightChild_, data,false);}
 				}
-		}
-		}
-	}
+		}//end xLevel
+		
+	
 
 	//the y levels
 		//left condidtion
-		if(!xLevel){
-		if(!compareEntries(cur->data_, data->x, data->y)){ //compate the data)
-			if(xLevel){ //compare by y
-				if(cur->data_->y > data->y){
+	if(!xLevel)
+	{
+	 //compare by y
+				if(cur->data_->y > data->y)
+				{
 					if(cur->leftChild_ == NULL)
 						{ 
 						Node* newNode = new Node();
@@ -63,14 +60,9 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 						}
 					else {buildKD(cur->leftChild_, data,true);}
 				}
-		}
-		}
-	}
+		
 
-		//right condition
-		if(!xLevel){
-		if(!compareEntries(cur->data_, data->x, data->y)){ //compate the data)
-			if(xLevel){ //compare by y
+			//right condition
 				if(cur->data_->y < data->y){
 					if(cur->rightChild_ == NULL)
 						{ 
@@ -84,7 +76,7 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 		}
 	}
 
-}
+
 	
  void gonzalrdStarbucks::build(Entry* c, int n){
 //need to pick median and them remove from list
@@ -134,10 +126,10 @@ double gonzalrdStarbucks::calculateDis(double x1, double x2, double y1, double y
 Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
 	
 	if(cur == NULL) return NULL;
-	if(compareEntries(cur->data_, x , y)) return cur->data_;
+	if(!compareEntries(cur->data_, x , y)) return cur->data_;
 	if(xLevel){
 		if(x < cur->data_->x){
-			if(cur->leftChild_ = NULL) cur->data_;
+			if(cur->leftChild_ == NULL) cur->data_;
 			else if(x > cur->leftChild_->data_->x)
 			{//check if bigger than left child
 			//if yes then compare distance and return the closet one-do opposite for the right-before return
@@ -161,7 +153,7 @@ Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
 	}
 		//right side
 		else if(x > cur->data_->x){
-			if(cur->rightChild_ = NULL) return cur->data_;
+			if(cur->rightChild_ == NULL) return cur->data_;
 
 			else if(x < cur->rightChild_->data_->x)
 			{//check if bigger than left child
@@ -184,7 +176,7 @@ Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
 
 	if(!xLevel){
 		if(y < cur->data_->y){
-			if(cur->leftChild_ = NULL) return cur->data_;
+			if(cur->leftChild_ == NULL) return cur->data_;
 				else if(y > cur->leftChild_->data_->y)
 			{//check if bigger than left child
 			//if yes then compare distance and return the closet one-do opposite for the right-before return
@@ -203,7 +195,7 @@ Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
 			else return search(cur->leftChild_,x,y,true);
 	}
 		else if(y > cur->data_->y){
-			if(cur->rightChild_ = NULL) return cur->data_;
+			if(cur->rightChild_ == NULL) return cur->data_;
 			else if(y < cur->rightChild_->data_->y)
 			{//check if bigger than left child
 			//if yes then compare distance and return the closet one-do opposite for the right-before return
