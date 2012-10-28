@@ -3,14 +3,65 @@
 
 int size;
 
-//this is a recursive method - deteminres if two entries are the same and re
-bool gonzalrdStarbucks::compareEntries(Node*cur, Entry*data){
+//this is a recursive method - deteminres if two entries are the same and returns true if they are
+bool gonzalrdStarbucks::compareEntries(Entry*cur, Entry*data){
 
+	double xoffset = abs(cur->x - data->x);
+	double yoffset = abs(cur->y - data->y);
+
+	if((xoffset < .00001) && (yoffset < .00001)) {return false;}
+
+	else {return true;}
+	
 }
+
 void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
+//handles the left side
 	if(xLevel){
-		
-		if(    ) //compate the data)
+		if(!compareEntries(cur->data_, data)){ //compate the data)
+			if(xLevel){ //compare by x
+				if(cur->data_->x > data->x){
+					if(cur->leftChild_ == NULL) cur-> leftChild_ -> data_ = data;
+					else {buildKD(cur->leftChild_, data,false);}
+				}
+		}
+		}
+	}
+//handles the right side
+	if(xLevel){
+		if(!compareEntries(cur->data_, data)){ //compate the data)
+			if(xLevel){ //compare by x
+				if(cur->data_->x < data->x){
+					if(cur->rightChild_ == NULL) cur-> rightChild_ -> data_ = data;
+					else {buildKD(cur->rightChild_, data,false);}
+				}
+		}
+		}
+	}
+
+	//the y levels
+		//left condidtion
+		if(!xLevel){
+		if(!compareEntries(cur->data_, data)){ //compate the data)
+			if(xLevel){ //compare by y
+				if(cur->data_->y > data->y){
+					if(cur->leftChild_ == NULL) cur-> leftChild_ -> data_ = data;
+					else {buildKD(cur->leftChild_, data,true);}
+				}
+		}
+		}
+	}
+
+		//right condition
+		if(!xLevel){
+		if(!compareEntries(cur->data_, data)){ //compate the data)
+			if(xLevel){ //compare by y
+				if(cur->data_->y < data->y){
+					if(cur->rightChild_ == NULL) cur-> rightChild_ -> data_ = data;
+					else {buildKD(cur->rightChild_, data,true);}
+				}
+		}
+		}
 	}
 
 }

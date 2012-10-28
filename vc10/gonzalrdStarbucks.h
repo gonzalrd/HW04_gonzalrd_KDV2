@@ -28,7 +28,7 @@ public:
 private:
 	Node * root; //maybe make this as my root not. //
 	Entry*pickRoot();
-	bool compareEntries();
+	bool compareEntries(Entry*cur, Entry*data);
 	void buildKD(Node*cur, Entry*data, bool xLevel); //cur is the current node, node is the one you are entering.
 	
 
