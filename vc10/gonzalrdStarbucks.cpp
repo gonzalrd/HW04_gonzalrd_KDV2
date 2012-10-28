@@ -21,7 +21,11 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 		if(!compareEntries(cur->data_, data)){ //compate the data)
 			if(xLevel){ //compare by x
 				if(cur->data_->x > data->x){
-					if(cur->leftChild_ == NULL) cur-> leftChild_ -> data_ = data;
+					if(cur->leftChild_ == NULL){ 
+						Node* newNode = new Node();
+						newNode->data_ = data;
+						cur-> leftChild_ = newNode;
+					}
 					else {buildKD(cur->leftChild_, data,false);}
 				}
 		}
@@ -32,7 +36,12 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 		if(!compareEntries(cur->data_, data)){ //compate the data)
 			if(xLevel){ //compare by x
 				if(cur->data_->x < data->x){
-					if(cur->rightChild_ == NULL) cur-> rightChild_ -> data_ = data;
+					if(cur->rightChild_ == NULL)
+						{ 
+						Node* newNode = new Node();
+						newNode->data_ = data;
+						cur-> rightChild_ = newNode;
+						}
 					else {buildKD(cur->rightChild_, data,false);}
 				}
 		}
@@ -45,7 +54,12 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 		if(!compareEntries(cur->data_, data)){ //compate the data)
 			if(xLevel){ //compare by y
 				if(cur->data_->y > data->y){
-					if(cur->leftChild_ == NULL) cur-> leftChild_ -> data_ = data;
+					if(cur->leftChild_ == NULL)
+						{ 
+						Node* newNode = new Node();
+						newNode->data_ = data;
+						cur-> leftChild_ = newNode;
+						}
 					else {buildKD(cur->leftChild_, data,true);}
 				}
 		}
@@ -57,7 +71,12 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 		if(!compareEntries(cur->data_, data)){ //compate the data)
 			if(xLevel){ //compare by y
 				if(cur->data_->y < data->y){
-					if(cur->rightChild_ == NULL) cur-> rightChild_ -> data_ = data;
+					if(cur->rightChild_ == NULL)
+						{ 
+						Node* newNode = new Node();
+						newNode->data_ = data;
+						cur-> leftChild_ = newNode;
+						}
 					else {buildKD(cur->rightChild_, data,true);}
 				}
 		}
@@ -69,10 +88,12 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
  void gonzalrdStarbucks::build(Entry* c, int n){
 //need to pick median and them remove from list
 	 Node*root; //this equals the root node
+	 entries = new Entry[n];
 
 	 
 	 for(int i = 0; i< n; i++){
-		 buildKD(root, c[i], true); //alwasy want to start at the root.
+		
+		 buildKD(root, &c[i], true); //alwasy want to start at the root.
 	 }
  }
 
