@@ -105,21 +105,21 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 
 Entry*  gonzalrdStarbucks::getNearest(double x, double y){
 
-	Entry *Best = new Entry();
-		double smallestDistance = sqrt(abs(entries[0].x-x) + abs(entries[0].y-y));
+ Entry *Best =  search(root, x ,y ,true);
+		//double smallestDistance = sqrt(abs(entries[0].x-x) + abs(entries[0].y-y));
 
-		for(int i=1; i<size; i++){
+		//for(int i=1; i<size; i++){
 
-			double candidateDis = sqrt(abs(entries[i].x-x) + abs(entries[i].y-y));
+		//	double candidateDis = sqrt(abs(entries[i].x-x) + abs(entries[i].y-y));
 
-			if(candidateDis < smallestDistance){
-				Best->identifier = entries[i].identifier;
-				Best->x = entries[i].x;
-				Best->y = entries[i].y;
-				smallestDistance = candidateDis;
-			}
+		//	if(candidateDis < smallestDistance){
+			//	Best->identifier = entries[i].identifier;
+			//	Best->x = entries[i].x;
+			//	Best->y = entries[i].y;
+				//smallestDistance = candidateDis;
+			//}
 
-		}
+		//}
 
 		return Best;
 
@@ -127,40 +127,99 @@ Entry*  gonzalrdStarbucks::getNearest(double x, double y){
 
 double gonzalrdStarbucks::calculateDis(double x1, double x2, double y1, double y2){
 
-
+	double dis = sqrt(abs(x1-x2) + abs(y1-y2));
+	return  dis;
 }
 
 Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
-	Entry*candidate;
+	
 	if(cur == NULL) return NULL;
 	if(compareEntries(cur->data_, x , y)) return cur->data_;
 	if(xLevel){
 		if(x < cur->data_->x){
 			if(cur->leftChild_ = NULL) cur->data_;
-			else if(x > cur->leftChild_->data_->x){//check if bigger than left child
+			else if(x > cur->leftChild_->data_->x)
+			{//check if bigger than left child
 			//if yes then compare distance and return the closet one-do opposite for the right-before return
-
+				double curDis = calculateDis(cur->data_->x, x , cur->data_->y, y);
+				double canDis = calculateDis(cur->leftChild_->data_->x, x , cur->leftChild_->data_->y, y);
+				if(curDis < canDis)
+				{
+					//check right here
+					return cur->data_;
+				}
+				else
+				{
+					return  cur->leftChild_->data_;
+				}
 			}
 			else
 			{ 
-				candidate = search(cur->leftChild_,x,y,false);
+				return search(cur->leftChild_,x,y,false);
 			}
 			
 	}
+		//right side
 		else if(x > cur->data_->x){
 			if(cur->rightChild_ = NULL) return cur->data_;
-			else candidate = search(cur->rightChild_,x,y,false);
+
+			else if(x < cur->rightChild_->data_->x)
+			{//check if bigger than left child
+			//if yes then compare distance and return the closet one-do opposite for the right-before return
+				double curDis = calculateDis(cur->data_->x, x , cur->data_->y, y);
+				double canDis = calculateDis(cur->rightChild_->data_->x, x , cur->rightChild_->data_->y, y);
+				if(curDis < canDis)
+				{
+					//check right here
+					return cur->data_;
+				}
+				else
+				{
+					return  cur->rightChild_->data_;
+				}
+			}
+			else return search(cur->rightChild_,x,y,false);
 		}
 	}
 
 	if(!xLevel){
 		if(y < cur->data_->y){
 			if(cur->leftChild_ = NULL) return cur->data_;
-			else candidate = search(cur->leftChild_,x,y,true);
+				else if(y > cur->leftChild_->data_->y)
+			{//check if bigger than left child
+			//if yes then compare distance and return the closet one-do opposite for the right-before return
+				double curDis = calculateDis(cur->data_->x, x , cur->data_->y, y);
+				double canDis = calculateDis(cur->leftChild_->data_->x, x , cur->leftChild_->data_->y, y);
+				if(curDis < canDis)
+				{
+					//check right here
+					return cur->data_;
+				}
+				else
+				{
+					return  cur->leftChild_->data_;
+				}
+			}
+			else return search(cur->leftChild_,x,y,true);
 	}
 		else if(y > cur->data_->y){
 			if(cur->rightChild_ = NULL) return cur->data_;
-			else candidate = search(cur->rightChild_,x,y,true);
+			else if(y < cur->rightChild_->data_->y)
+			{//check if bigger than left child
+			//if yes then compare distance and return the closet one-do opposite for the right-before return
+				double curDis = calculateDis(cur->data_->x, x , cur->data_->y, y);
+				double canDis = calculateDis(cur->rightChild_->data_->x, x , cur->rightChild_->data_->y, y);
+				if(curDis < canDis)
+				{
+					//check right here
+					return cur->data_;
+				}
+				else
+				{
+					return  cur->rightChild_->data_;
+				}
+			}
+			else return search(cur->rightChild_,x,y,true);
 		}
 	}
 		
