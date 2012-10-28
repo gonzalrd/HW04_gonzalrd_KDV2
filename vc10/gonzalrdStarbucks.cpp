@@ -67,21 +67,14 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 }
 	
  void gonzalrdStarbucks::build(Entry* c, int n){
-		size =  n;
-	 entries = new Entry[n];
+//need to pick median and them remove from list
+	 Node*root; //this equals the root node
 
-	 entries[1] = c[1]; //move over the first
-
-	 for(int i = 1; i<n; i++){
-		 double xoffset = abs(c[i-1].x - c[i].x);
-		 double yoffset = abs(c[i-1].y - c[i].y);
-
-		 if(xoffset > 0.00001 && yoffset > 0.00001){
-			 entries[i] = c[i];
-		 }
+	 
+	 for(int i = 0; i< n; i++){
+		 buildKD(root, c[i], true); //alwasy want to start at the root.
 	 }
-	
-	}
+ }
 
  //implementation of a linear search
 
