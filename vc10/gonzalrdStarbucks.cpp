@@ -125,5 +125,11 @@ Entry*  gonzalrdStarbucks::getNearest(double x, double y){
 
 }
 
+Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
+	
+
+
+}
+
 
 

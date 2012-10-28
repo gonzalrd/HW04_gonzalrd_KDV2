@@ -17,7 +17,7 @@ private:
 	Entry*pickRoot();
 	bool compareEntries(Entry*cur, Entry*data);
 	void buildKD(Node*cur, Entry*data, bool xLevel); //cur is the current node, node is the one you are entering.
-	
+	Entry * search(Node*cur, double x , double y, bool xLevel);
 
 
 };
