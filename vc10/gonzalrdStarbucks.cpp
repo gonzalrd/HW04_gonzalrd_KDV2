@@ -1,5 +1,6 @@
 #pragma once
 #include "gonzalrdStarbucks.h"
+#include "Node.h"
 
 int size;
 
@@ -87,7 +88,7 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 	
  void gonzalrdStarbucks::build(Entry* c, int n){
 //need to pick median and them remove from list
-	 Node*root = new Node();
+	 root = new Node();
 	 root->data_->identifier = "root node";
 	 root->data_->x = .5;
 	 root->data_->y = .5;

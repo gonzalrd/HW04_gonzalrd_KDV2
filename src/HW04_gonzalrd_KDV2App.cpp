@@ -63,7 +63,7 @@ void HW04_gonzalrd_KDV2App::setup()
 
 	Entry* mylocs = read();
 
-	star.build(mylocs,size);
+	//star.build(mylocs,size);
 
 //	Entry* BEST = star.getNearest(.634, .145);
 

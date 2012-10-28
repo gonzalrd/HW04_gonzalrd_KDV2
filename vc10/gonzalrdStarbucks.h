@@ -1,22 +1,9 @@
 #pragma once
 #include "Starbucks.h"
+#include "Node.h"
 #include <vector>
 
 
-//make a class nodes for ther K-d implementation
-class Node
-{ 
-public:
-	Node();
-
-	Node*rightChild_; 
-
-	Node*leftChild_;
-
-	Entry*data_;
-
-	~Node(void);
-};
 
 
 class gonzalrdStarbucks : public Starbucks {

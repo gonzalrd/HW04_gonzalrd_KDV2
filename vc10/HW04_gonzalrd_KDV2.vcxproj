@@ -106,11 +106,13 @@
   <ItemGroup>
     <ClCompile Include="..\src\HW04_gonzalrd_KDV2App.cpp" />
     <ClCompile Include="gonzalrdStarbucks.cpp" />
+    <ClCompile Include="Node.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\include\Starbucks.h" />
     <ClInclude Include="gonzalrdStarbucks.h" />
+    <ClInclude Include="Node.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />
