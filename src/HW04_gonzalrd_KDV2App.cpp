@@ -2,6 +2,7 @@
 #include "cinder/gl/gl.h"
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 #include <string>
 #include <vector>
 #include "Starbucks.h"
@@ -54,9 +55,12 @@ Entry* HW04_gonzalrd_KDV2App::read()
 
 	
 	readLocs.push_back(*newEntry);
-	
+
+	delete newEntry;
 	
 }
+	
+
 	size = readLocs.size();
 	Entry*entries = new Entry[size];
 	for(int n = 0; n< size; n++){
@@ -75,7 +79,7 @@ void HW04_gonzalrd_KDV2App::setup()
 
 	star.build(myLocs,size);
 
-	Entry* BEST = star.getNearest(.434, .345);
+	Entry* BEST = star.getNearest(.334, .650);
 
 }
 

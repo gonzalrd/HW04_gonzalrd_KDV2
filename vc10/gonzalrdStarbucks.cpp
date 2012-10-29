@@ -4,6 +4,42 @@
 
 int size;
 
+//partition method for quicksort - taken from  http://login2win.blogspot.com/2011/06/what-is-quick-sort-algorithm-how-to.html
+//sorted by x values
+double gonzalrdStarbucks::partition(Entry* entries, int p, int r){
+	double pivot = entries[r].x;
+
+	while(p<r){
+		while(entries[p].x < pivot){
+			p++;
+		}
+		while(entries[p].x > pivot){
+			r--;
+		}
+		if(entries[p].x == entries[r].x){
+			p++;
+		}
+		else if( p< r ){
+			Entry temp = entries[p];
+			entries[p] = entries[r];
+			entries[r]= temp;
+	}
+}
+
+	return r;
+}
+//sorted by x values
+void gonzalrdStarbucks::quicksort(Entry*entries, int p, int r){
+	
+	if(p < r){
+	int j = partition(entries, p, r);
+	quicksort(entries,p, j-1);
+	quicksort(entries,j+1, r);
+	}
+}
+
+//quicksort method http://login2win.blogspot.com/2011/06/what-is-quick-sort-algorithm-how-to.html
+
 //this is a recursive method - deteminres if two entries are the same and returns true if they are
 bool gonzalrdStarbucks::compareEntries(Entry*cur, double x , double y){
 
@@ -85,8 +121,8 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 	 root->data_->identifier = "root node";
 	 root->data_->x = .5;
 	 root->data_->y = .5;
-	 //this equals the root node
-	// entries = new Entry[n];
+	
+	// quicksort(c, 0, n);
 	 
 	 for(int i = 0; i< n; i++){
 		 buildKD(root, &c[i], true); //alwasy want to start at the root.
@@ -98,152 +134,58 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 Entry*  gonzalrdStarbucks::getNearest(double x, double y){
 
  Entry *Best =  search(root, x ,y ,true);
-		//double smallestDistance = sqrt(abs(entries[0].x-x) + abs(entries[0].y-y));
-
-		//for(int i=1; i<size; i++){
-
-		//	double candidateDis = sqrt(abs(entries[i].x-x) + abs(entries[i].y-y));
-
-		//	if(candidateDis < smallestDistance){
-			//	Best->identifier = entries[i].identifier;
-			//	Best->x = entries[i].x;
-			//	Best->y = entries[i].y;
-				//smallestDistance = candidateDis;
-			//}
-
-		//}
+	
 
 		return Best;
 
 }
 
-double gonzalrdStarbucks::calculateDis(double x1, double x2, double y1, double y2){
+double gonzalrdStarbucks::calculateDis(Entry*data, double x2, double y2){
+	
+	if(data == NULL) return 4;
+	double x1 = data->x ;
+	double y1 = data->y;
+	double dis = sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 
-	double dis = sqrt(abs(x1-x2) + abs(y1-y2));
 	return  dis;
 }
 
 Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
-	Node*candidate;
-
+	Entry*candidate;
+	
 	if(cur == NULL) return NULL;
-	if(!compareEntries(cur->data_, x , y)) return cur->data_;
+	double curDis = calculateDis(cur->data_, x , y);
+	if(!compareEntries(cur->data_, x,y) )return cur->data_;
 	if(xLevel){
-		if(x < cur->data_->x){
-			if(cur->leftChild_ == NULL) return cur->data_;
-			else if(x > cur->leftChild_->data_->x)
-			{
-				candidate = cur->leftChild_;
-				double canDis = calculateDis(candidate->data_->x , x , candidate->data_->y, y);
-				if(y < candidate->data_->y )//check the left node
-				{
-					double leftDis = calculateDis(candidate->leftChild_->data_->x , x , candidate->leftChild_->data_->y, y);
-					if(leftDis < canDis);
-					return candidate->leftChild_->data_;
-
-				}
-				else if(y < candidate->data_->y )//check the right node
-				{
-					double rightDis = calculateDis(candidate->rightChild_->data_->x , x , candidate->rightChild_->data_->y, y);
-					if(rightDis < canDis);
-					return candidate->rightChild_->data_;
-
-				}
-				else 
-					return candidate->data_;
-			}
-			else
-			{ 
-				return search(cur->leftChild_,x,y,false);
-			}
+		if(x< cur->data_->x)
+		{
 			
-	}
-		//right side
-		else if(x > cur->data_->x){
-			if(cur->rightChild_ == NULL) return cur->data_;
-
-			else if(x < cur->rightChild_->data_->x)
-			{
-
-				candidate = cur->rightChild_;
-				double canDis = calculateDis(candidate->data_->x , x , candidate->data_->y, y);
-				if(y < candidate->data_->y )//check the left node
-				{
-					double leftDis = calculateDis(candidate->leftChild_->data_->x , x , candidate->leftChild_->data_->y, y);
-					if(leftDis < canDis);
-					return candidate->leftChild_->data_;
-
-				}
-				else if(y < candidate->data_->y )//check the right node
-				{
-					double rightDis = calculateDis(candidate->rightChild_->data_->x , x , candidate->rightChild_->data_->y, y);
-					if(rightDis < canDis);
-					return candidate->rightChild_->data_;
-
-				}
-				else 
-					return candidate->data_;
-			}
-			else return search(cur->rightChild_,x,y,false);
+			candidate = search(cur->leftChild_,x , y, false);
 		}
-	}
-
-	if(!xLevel){
-		if(y < cur->data_->y){
-			if(cur->leftChild_ == NULL) return cur->data_;
-				else if(y > cur->leftChild_->data_->y)
-			{
-				candidate = cur->leftChild_;
-				double canDis = calculateDis(candidate->data_->x , x , candidate->data_->y, y);
-				if(x < candidate->data_->x)//check the left node
-				{
-					double leftDis = calculateDis(candidate->leftChild_->data_->x , x , candidate->leftChild_->data_->y, y);
-					if(leftDis < canDis);
-					return candidate->leftChild_->data_;
-
-				}
-				else if(x < candidate->data_->x )//check the right node
-				{
-					double rightDis = calculateDis(candidate->rightChild_->data_->x , x , candidate->rightChild_->data_->y, y);
-					if(rightDis < canDis);
-					return candidate->rightChild_->data_;
-
-				}
-				else 
-					return candidate->data_;
-
-			}
-			else return search(cur->leftChild_,x,y,true);
-	}
-		//Handles the right side
-		else if(y > cur->data_->y){
-			if(cur->rightChild_ == NULL) return cur->data_;
-			else if(y < cur->rightChild_->data_->y)
-			{
-					candidate = cur->rightChild_;
-				double canDis = calculateDis(candidate->data_->x , x , candidate->data_->y, y);
-				if(x < candidate->data_->x )//check the left node
-				{
-					double leftDis = calculateDis(candidate->leftChild_->data_->x , x , candidate->leftChild_->data_->y, y);
-					if(leftDis < canDis);
-					return candidate->leftChild_->data_;
-
-				}
-				else if(x < candidate->data_->x )//check the right node
-				{
-					double rightDis = calculateDis(candidate->rightChild_->data_->x , x , candidate->rightChild_->data_->y, y);
-					if(rightDis < canDis);
-					return candidate->rightChild_->data_;
-
-				}
-				else 
-					return candidate->data_;
-			}
-			else return search(cur->rightChild_,x,y,true);
-		}
-	}
+		else
+			candidate = search(cur->rightChild_ ,x, y, false);
 		
 }
 
+		if(!xLevel){
+		if(y< cur->data_->y)
+		{
+
+			candidate = search(cur->leftChild_,x , y, true);
+		}
+		else
+			candidate = search(cur->rightChild_ ,x, y, true);
+		
+}
+		double canDis = calculateDis(candidate ,x, y);
+
+		if(curDis < canDis){
+			candidate = cur->data_;
+			canDis = curDis;
+		}
 
 
+		if(candidate->identifier != "root node") return candidate;
+		else return cur->leftChild_->data_;
+
+}
