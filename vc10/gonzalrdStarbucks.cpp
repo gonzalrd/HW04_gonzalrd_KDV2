@@ -68,7 +68,7 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 						{ 
 						Node* newNode = new Node();
 						newNode->data_ = data;
-						cur-> leftChild_ = newNode;
+						cur-> rightChild_ = newNode;
 						}
 					else {buildKD(cur->rightChild_, data,true);}
 				}
@@ -124,29 +124,52 @@ double gonzalrdStarbucks::calculateDis(double x1, double x2, double y1, double y
 }
 
 Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
-	
+	Node*candidate;
+
 	if(cur == NULL) return NULL;
 	if(!compareEntries(cur->data_, x , y)) return cur->data_;
 	if(xLevel){
 		if(x < cur->data_->x){
-			if(cur->leftChild_ == NULL) cur->data_;
+			if(cur->leftChild_ == NULL) return cur->data_;
 			else if(x > cur->leftChild_->data_->x)
-			{//check if bigger than left child
-			//if yes then compare distance and return the closet one-do opposite for the right-before return
-				double curDis = calculateDis(cur->data_->x, x , cur->data_->y, y);
-				double canDis = calculateDis(cur->leftChild_->data_->x, x , cur->leftChild_->data_->y, y);
-				if(curDis < canDis)
+			{
+				candidate = cur->leftChild_;
+				double canDis = calculateDis(candidate->data_->x , x , candidate->data_->y, y);
+				if(y < candidate->data_->y )//check the left node
 				{
-					//check right here
-					if(cur == root){return cur->rightChild_->data_;}
-					else return cur->data_;
-					return cur->data_;
-				}
-				else
-				{
+					double leftDis = calculateDis(candidate->leftChild_->data_->x , x , candidate->leftChild_->data_->y, y);
+					if(leftDis < canDis);
+					return candidate->leftChild_->data_;
 
-					return  cur->leftChild_->data_;
 				}
+				else if(y < candidate->data_->y )//check the right node
+				{
+					double rightDis = calculateDis(candidate->rightChild_->data_->x , x , candidate->rightChild_->data_->y, y);
+					if(rightDis < canDis);
+					return candidate->rightChild_->data_;
+
+				}
+				else 
+					return candidate->data_;
+			
+
+			//if yes then compare distance and return the closet one-do opposite for the right-before return
+				//need to find the y now that I have found the x. then calculate distance.
+				//double curDis = calculateDis(cur->data_->x, x , cur->data_->y, y);
+				//double canDisleft = calculateDis(cur->leftChild_->data_->x, x , cur->leftChild_->data_->y, y);
+				//double canDisright = calculateDis(cur->rightChild_->data_->x, x , cur->rightChild_->data_->y, y);
+				//if(curDis < canDisleft)
+				//{
+					//check right here
+				//	if(cur == root || canDisright < curDis){return cur->rightChild_->data_;}
+				//	else return cur->data_;
+				//	return cur->data_;
+				//}
+				//else
+				//{
+
+					//return  cur->leftChild_->data_;
+				//}
 			}
 			else
 			{ 
@@ -161,19 +184,39 @@ Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
 			else if(x < cur->rightChild_->data_->x)
 			{//check if bigger than left child
 			//if yes then compare distance and return the closet one-do opposite for the right-before return
-				double curDis = calculateDis(cur->data_->x, x , cur->data_->y, y);
-				double canDis = calculateDis(cur->rightChild_->data_->x, x , cur->rightChild_->data_->y, y);
-				if(curDis < canDis)
-				{
+				//double curDis = calculateDis(cur->data_->x, x , cur->data_->y, y);
+				//double canDisRight = calculateDis(cur->rightChild_->data_->x, x , cur->rightChild_->data_->y, y);
+				//double canDisLeft = calculateDis(cur->leftChild_->data_->x, x , cur->leftChild_->data_->y, y);
+				//if(curDis < canDisRight)
+				//{
 					//check right here
-					if(cur == root){return cur->rightChild_->data_;}
-					else return cur->data_;
-					return cur->data_;
-				}
-				else
+					//if(cur == root || canDisLeft < curDis){return cur->rightChild_->data_;}
+					////else return cur->data_;
+					//return cur->data_;
+				//}
+				//else
+				//{
+				//	return  cur->rightChild_->data_;
+				//}
+
+				candidate = cur->rightChild_;
+				double canDis = calculateDis(candidate->data_->x , x , candidate->data_->y, y);
+				if(y < candidate->data_->y )//check the left node
 				{
-					return  cur->rightChild_->data_;
+					double leftDis = calculateDis(candidate->leftChild_->data_->x , x , candidate->leftChild_->data_->y, y);
+					if(leftDis < canDis);
+					return candidate->leftChild_->data_;
+
 				}
+				else if(y < candidate->data_->y )//check the right node
+				{
+					double rightDis = calculateDis(candidate->rightChild_->data_->x , x , candidate->rightChild_->data_->y, y);
+					if(rightDis < canDis);
+					return candidate->rightChild_->data_;
+
+				}
+				else 
+					return candidate->data_;
 			}
 			else return search(cur->rightChild_,x,y,false);
 		}
@@ -185,39 +228,80 @@ Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
 				else if(y > cur->leftChild_->data_->y)
 			{//check if bigger than left child
 			//if yes then compare distance and return the closet one-do opposite for the right-before return
-				double curDis = calculateDis(cur->data_->x, x , cur->data_->y, y);
-				double canDis = calculateDis(cur->leftChild_->data_->x, x , cur->leftChild_->data_->y, y);
-				if(curDis < canDis)
-				{
+				////double curDis = calculateDis(cur->data_->x, x , cur->data_->y, y);
+				//double canDisLeft = calculateDis(cur->leftChild_->data_->x, x , cur->leftChild_->data_->y, y);
+				//double canDisRight = calculateDis(cur->rightChild_->data_->x, x , cur->rightChild_->data_->y, y);
+				//if(curDis < canDisLeft)
+				//{
 					//check right here
-					if(cur == root){return cur->leftChild_->data_;}
-					else return cur->data_;
-					return cur->data_;
-				}
-				else
+					//if(cur == root || canDisRight < curDis){return cur->leftChild_->data_;}
+					//else return cur->data_;
+					//return cur->data_;
+				//}
+				//else
+				//{
+					//return  cur->leftChild_->data_;
+				//}
+
+				candidate = cur->leftChild_;
+				double canDis = calculateDis(candidate->data_->x , x , candidate->data_->y, y);
+				if(x < candidate->data_->x)//check the left node
 				{
-					return  cur->leftChild_->data_;
+					double leftDis = calculateDis(candidate->leftChild_->data_->x , x , candidate->leftChild_->data_->y, y);
+					if(leftDis < canDis);
+					return candidate->leftChild_->data_;
+
 				}
+				else if(x < candidate->data_->x )//check the right node
+				{
+					double rightDis = calculateDis(candidate->rightChild_->data_->x , x , candidate->rightChild_->data_->y, y);
+					if(rightDis < canDis);
+					return candidate->rightChild_->data_;
+
+				}
+				else 
+					return candidate->data_;
+
 			}
 			else return search(cur->leftChild_,x,y,true);
 	}
+		//Handles the right side
 		else if(y > cur->data_->y){
 			if(cur->rightChild_ == NULL) return cur->data_;
 			else if(y < cur->rightChild_->data_->y)
 			{//check if bigger than left child
 			//if yes then compare distance and return the closet one-do opposite for the right-before return
-				double curDis = calculateDis(cur->data_->x, x , cur->data_->y, y);
-				double canDis = calculateDis(cur->rightChild_->data_->x, x , cur->rightChild_->data_->y, y);
-				if(curDis < canDis)
-				{
+				//double curDis = calculateDis(cur->data_->x, x , cur->data_->y, y);
+				//double canDisRight= calculateDis(cur->rightChild_->data_->x, x , cur->rightChild_->data_->y, y);
+				//double canDisLeft = calculateDis(cur->leftChild_->data_->x, x , cur->leftChild_->data_->y, y);
+				//if(curDis < canDisRight)
+				//{
 					//check right here
-					if(cur == root){return cur->rightChild_->data_;}
-					else return cur->data_;
-				}
-				else
+					//if(cur == root || canDisLeft > curDis){return cur->rightChild_->data_;}
+					///else return cur->data_;
+				//}
+				//else
+				//{
+					//return  cur->rightChild_->data_;
+				//}
+					candidate = cur->rightChild_;
+				double canDis = calculateDis(candidate->data_->x , x , candidate->data_->y, y);
+				if(x < candidate->data_->x )//check the left node
 				{
-					return  cur->rightChild_->data_;
+					double leftDis = calculateDis(candidate->leftChild_->data_->x , x , candidate->leftChild_->data_->y, y);
+					if(leftDis < canDis);
+					return candidate->leftChild_->data_;
+
 				}
+				else if(x < candidate->data_->x )//check the right node
+				{
+					double rightDis = calculateDis(candidate->rightChild_->data_->x , x , candidate->rightChild_->data_->y, y);
+					if(rightDis < canDis);
+					return candidate->rightChild_->data_;
+
+				}
+				else 
+					return candidate->data_;
 			}
 			else return search(cur->rightChild_,x,y,true);
 		}

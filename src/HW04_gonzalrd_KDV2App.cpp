@@ -67,7 +67,7 @@ void HW04_gonzalrd_KDV2App::setup()
 
 	star.build(myLocs,size-1);
 
-	Entry* BEST = star.getNearest(.934, .245);
+	Entry* BEST = star.getNearest(.434, .245);
 
 }
 
