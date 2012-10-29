@@ -138,10 +138,13 @@ Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
 				if(curDis < canDis)
 				{
 					//check right here
+					if(cur == root){return cur->rightChild_->data_;}
+					else return cur->data_;
 					return cur->data_;
 				}
 				else
 				{
+
 					return  cur->leftChild_->data_;
 				}
 			}
@@ -163,6 +166,8 @@ Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
 				if(curDis < canDis)
 				{
 					//check right here
+					if(cur == root){return cur->rightChild_->data_;}
+					else return cur->data_;
 					return cur->data_;
 				}
 				else
@@ -185,6 +190,8 @@ Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
 				if(curDis < canDis)
 				{
 					//check right here
+					if(cur == root){return cur->leftChild_->data_;}
+					else return cur->data_;
 					return cur->data_;
 				}
 				else
@@ -204,7 +211,8 @@ Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
 				if(curDis < canDis)
 				{
 					//check right here
-					return cur->data_;
+					if(cur == root){return cur->rightChild_->data_;}
+					else return cur->data_;
 				}
 				else
 				{
