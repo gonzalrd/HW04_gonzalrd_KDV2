@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 #include "Starbucks.h"
 #include "../vc10/gonzalrdStarbucks.h"
 
@@ -24,9 +25,9 @@ class HW04_gonzalrd_KDV2App : public AppBasic {
 
 Entry* HW04_gonzalrd_KDV2App::read()
 {
-	size = 7656; //temporary solution
+	vector<Entry> readLocs;
 	
-	Entry* entries = new Entry[size];
+	//Entry* entries = new Entry[size];
 	
 	ifstream in ("Starbucks_2006.csv");
 
@@ -46,14 +47,21 @@ Entry* HW04_gonzalrd_KDV2App::read()
 	in.get();
 	in >> y;
 
-	entries[i].identifier = line;
-	entries[i].x =x;
-	entries[i].y = y;
+	Entry* newEntry = new Entry();
+	newEntry->identifier = line;
+	newEntry->x = x;
+	newEntry->y = y;
 
-	i++;
+	
+	readLocs.push_back(*newEntry);
 	
 	
 }
+	size = readLocs.size();
+	Entry*entries = new Entry[size];
+	for(int n = 0; n< size; n++){
+		entries[n] = readLocs[n];
+	}
 
 	return entries;
 	
@@ -65,9 +73,9 @@ void HW04_gonzalrd_KDV2App::setup()
 
 	Entry*myLocs = read();
 
-	star.build(myLocs,size-1);
+	star.build(myLocs,size);
 
-	Entry* BEST = star.getNearest(.634, .545);
+	Entry* BEST = star.getNearest(.434, .345);
 
 }
 

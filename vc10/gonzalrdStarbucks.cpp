@@ -86,7 +86,7 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 	 root->data_->x = .5;
 	 root->data_->y = .5;
 	 //this equals the root node
-	 entries = new Entry[n];
+	// entries = new Entry[n];
 	 
 	 for(int i = 0; i< n; i++){
 		 buildKD(root, &c[i], true); //alwasy want to start at the root.
