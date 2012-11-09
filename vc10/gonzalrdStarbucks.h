@@ -1,7 +1,6 @@
 #pragma once
 #include "Starbucks.h"
-#include "Node.h"
-#include <algorithm>
+#include "../vc10/Node.h"
 #include <vector>
 
 
@@ -20,7 +19,4 @@ private:
 	void buildKD(Node*cur, Entry*data, bool xLevel); //cur is the current node, node is the one you are entering.
 	Entry * search(Node*cur, double x , double y, bool xLevel);
 	double calculateDis(Entry*data, double x2, double y2);
-	double partition(Entry*entries, int p , int r); //code taken from http://login2win.blogspot.com/2011/06/what-is-quick-sort-algorithm-how-to.html
-	void quicksort(Entry*entries, int p , int  r); //code taken from http://login2win.blogspot.com/2011/06/what-is-quick-sort-algorithm-how-to.html
-
 };

@@ -1,44 +1,6 @@
 #pragma once
 #include "gonzalrdStarbucks.h"
-#include "Node.h"
 
-int size;
-
-//partition method for quicksort - taken from  http://login2win.blogspot.com/2011/06/what-is-quick-sort-algorithm-how-to.html
-//sorted by x values
-double gonzalrdStarbucks::partition(Entry* entries, int p, int r){
-	double pivot = entries[r].x;
-
-	while(p<r){
-		while(entries[p].x < pivot){
-			p++;
-		}
-		while(entries[p].x > pivot){
-			r--;
-		}
-		if(entries[p].x == entries[r].x){
-			p++;
-		}
-		else if( p< r ){
-			Entry temp = entries[p];
-			entries[p] = entries[r];
-			entries[r]= temp;
-	}
-}
-
-	return r;
-}
-//sorted by x values
-void gonzalrdStarbucks::quicksort(Entry*entries, int p, int r){
-	
-	if(p < r){
-	int j = partition(entries, p, r);
-	quicksort(entries,p, j-1);
-	quicksort(entries,j+1, r);
-	}
-}
-
-//quicksort method http://login2win.blogspot.com/2011/06/what-is-quick-sort-algorithm-how-to.html
 
 //this is a recursive method - deteminres if two entries are the same and returns true if they are
 bool gonzalrdStarbucks::compareEntries(Entry*cur, double x , double y){
@@ -122,7 +84,7 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 	 root->data_->x = .5;
 	 root->data_->y = .5;
 	
-	// quicksort(c, 0, n);
+	 
 	 
 	 for(int i = 0; i< n; i++){
 		 buildKD(root, &c[i], true); //alwasy want to start at the root.
@@ -150,6 +112,7 @@ double gonzalrdStarbucks::calculateDis(Entry*data, double x2, double y2){
 	return  dis;
 }
 
+//Got help from Brandon Harmon
 Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
 	Entry*candidate;
 	

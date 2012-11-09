@@ -1,8 +1,10 @@
+
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
+#include "cinder/ImageIo.h"
+#include "cinder/gl/Texture.h"
 #include <iostream>
 #include <fstream>
-#include <algorithm>
 #include <string>
 #include <vector>
 #include "Starbucks.h"
@@ -12,7 +14,10 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
+
+
 class HW04_gonzalrd_KDV2App : public AppBasic {
+
   public:
 	void setup();
 	void mouseDown( MouseEvent event );	
@@ -20,6 +25,7 @@ class HW04_gonzalrd_KDV2App : public AppBasic {
 	void draw();
 	Entry*read();
 	int size;
+	gl::Texture myImage;
 	
 
 };
@@ -28,7 +34,6 @@ Entry* HW04_gonzalrd_KDV2App::read()
 {
 	vector<Entry> readLocs;
 	
-	//Entry* entries = new Entry[size];
 	
 	ifstream in ("Starbucks_2006.csv");
 
@@ -73,13 +78,15 @@ Entry* HW04_gonzalrd_KDV2App::read()
 
 void HW04_gonzalrd_KDV2App::setup()
 {
-	gonzalrdStarbucks star;
 
-	Entry*myLocs = read();
+	myImage = gl::Texture( loadImage("usa-map.jpg"));
+//	gonzalrdStarbucks star;
+//
+//	Entry*myLocs = read();
 
-	star.build(myLocs,size);
+//	star.build(myLocs,size);
 
-	Entry* BEST = star.getNearest(.334, .650);
+//	Entry* BEST = star.getNearest(.334, .650);
 
 }
 
@@ -96,6 +103,8 @@ void HW04_gonzalrd_KDV2App::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) ); 
+
+	gl::draw( myImage, getWindowBounds() );
 }
 
 CINDER_APP_BASIC( HW04_gonzalrd_KDV2App, RendererGl )
