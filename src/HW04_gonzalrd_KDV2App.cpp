@@ -105,7 +105,7 @@ void HW04_gonzalrd_KDV2App::setup()
 
 	mCam.setPerspective( 60.0f, mapWidth/mapHeight, 5.0f, 3000.0f );
 
-	Vec3f mEye  = Vec3f( 0.0f, 0.0f, 500.0f );
+	Vec3f mEye  = Vec3f( 20.0f, 200.0f, 100.0f );
 	Vec3f mCenter = Vec3f::zero();
 	Vec3f mUp  =  Vec3f::yAxis();
 	
@@ -124,6 +124,8 @@ void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 {
 	float x = event.getX();
 	float y = event.getY();
+
+	gl::setMatrices( mCam );
 
 }
 
@@ -155,7 +157,7 @@ void HW04_gonzalrd_KDV2App::draw()
 	
 	}
 
-	gl::setMatrices( mCam );
+	
 
 }
 
