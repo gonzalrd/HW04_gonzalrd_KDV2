@@ -32,6 +32,8 @@ private:
 	Surface* map;
 	int size;
 	gl::Texture myImage;
+	int mapWidth;
+	int mapHeight;
 	Entry*myLocs;
 	
 
@@ -94,13 +96,11 @@ void HW04_gonzalrd_KDV2App::setup()
 {
 
 	myImage = gl::Texture( loadImage("usa-map.jpg"));
-
+	mapWidth = myImage.getWidth();
+	mapHeight = myImage.getHeight();
 
 	//gonzalrdStarbucks star;
 
-	//This is the setup that everyone needs to do
-	
-	
 	
 
     myLocs = read();
@@ -137,8 +137,8 @@ void HW04_gonzalrd_KDV2App::draw()
 
 	for(int i = 0; i<size; i++){
 		
-		x = myLocs[i].x*1000;
-		y = myLocs[i].y*1000;
+		x = myLocs[i].x*mapWidth;
+		y = myLocs[i].y*mapHeight;
 
 		gl::drawSolidCircle( Vec2f( x , y ), 3.4f );
 
