@@ -4,6 +4,7 @@
 #include "cinder/ImageIo.h"
 #include "cinder/gl/Texture.h"
 #include "cinder\Surface.h"
+#include "cinder/Camera.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -35,6 +36,7 @@ private:
 	int mapWidth;
 	int mapHeight;
 	Entry*myLocs;
+	CameraPersp mCam;
 	
 
 	static const int kAppWidth=800;
@@ -101,7 +103,13 @@ void HW04_gonzalrd_KDV2App::setup()
 
 //	gonzalrdStarbucks star;
 
+	mCam.setPerspective( 60.0f, mapWidth/mapHeight, 5.0f, 3000.0f );
+
+	Vec3f mEye  = Vec3f( 0.0f, 0.0f, 500.0f );
+	Vec3f mCenter = Vec3f::zero();
+	Vec3f mUp  =  Vec3f::yAxis();
 	
+	mCam.lookAt( mEye, mCenter, mUp );
 
    myLocs = read();
 
@@ -144,9 +152,10 @@ void HW04_gonzalrd_KDV2App::draw()
 		y = myLocs[i].y*mapHeight+40;
 		gl::drawSolidCircle( Vec2f( x , y ), 3.4f );
 		}
-		
-
+	
 	}
+
+	gl::setMatrices( mCam );
 
 }
 
