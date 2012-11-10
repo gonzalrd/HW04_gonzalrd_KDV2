@@ -99,21 +99,23 @@ void HW04_gonzalrd_KDV2App::setup()
 	mapWidth = myImage.getWidth();
 	mapHeight = myImage.getHeight();
 
-	//gonzalrdStarbucks star;
+//	gonzalrdStarbucks star;
 
 	
 
-    myLocs = read();
+   myLocs = read();
 
 
 //	star.build(myLocs,size);
 
-//	Entry* BEST = star.getNearest(.334, .650);
+  // Entry* BEST = star.getNearest(.421, .675);
 
 }
 
 void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 {
+	float x = event.getX();
+	float y = event.getY();
 
 }
 
@@ -125,31 +127,27 @@ void HW04_gonzalrd_KDV2App::update()
 void HW04_gonzalrd_KDV2App::draw()
 {
 	// clear out the window with black
-	gl::clear( Color( 0, 0, 0 ) ); 
+	//gl::clear( Color( 0, 0, 0 ) ); 
 
 	gl::draw( myImage, getWindowBounds() );
 
 	float x;
 	float y;
 	
-
-	gl::color(Color(0.7f, 0.3f, 0.2f));
+	float refLine = .5;
+	
+	gl::color(Color(0.1f, 0.3f, 0.3f));
 
 	for(int i = 0; i<size; i++){
-		
-		x = myLocs[i].x*mapWidth;
-		y = myLocs[i].y*mapHeight;
-
+		if(myLocs[i].x < 0.61 && myLocs[i].x >0.56 && myLocs[i].y < .72 && myLocs[i].y < .70 ){
+		x = myLocs[i].x*mapWidth+100;
+		y = myLocs[i].y*mapHeight+40;
 		gl::drawSolidCircle( Vec2f( x , y ), 3.4f );
+		}
+		
 
 	}
 
-
-	
-
-	
-
-	
 }
 
 CINDER_APP_BASIC( HW04_gonzalrd_KDV2App, RendererGl )
