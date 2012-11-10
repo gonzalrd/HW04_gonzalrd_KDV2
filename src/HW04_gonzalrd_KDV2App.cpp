@@ -32,6 +32,8 @@ private:
 	Surface* map;
 	int size;
 	gl::Texture myImage;
+	Entry*myLocs;
+	
 
 	static const int kAppWidth=800;
 	static const int kAppHeight=600;
@@ -42,8 +44,8 @@ private:
 
 Entry* HW04_gonzalrd_KDV2App::read()
 {
+
 	vector<Entry> readLocs;
-	
 	
 	ifstream in ("Starbucks_2006.csv");
 
@@ -94,14 +96,14 @@ void HW04_gonzalrd_KDV2App::setup()
 	myImage = gl::Texture( loadImage("usa-map.jpg"));
 
 
-//	gonzalrdStarbucks star;
+	//gonzalrdStarbucks star;
 
 	//This is the setup that everyone needs to do
 	
 	
 	
 
-    Entry*myLocs = read();
+    myLocs = read();
 
 
 //	star.build(myLocs,size);
@@ -127,12 +129,23 @@ void HW04_gonzalrd_KDV2App::draw()
 
 	gl::draw( myImage, getWindowBounds() );
 
-
+	float x;
+	float y;
 	
 
 	gl::color(Color(0.7f, 0.3f, 0.2f));
 
-	gl::drawSolidCircle( Vec2f( 100.0f, 100.0f ), 3.4f );
+	for(int i = 0; i<size; i++){
+		
+		x = myLocs[i].x*1000;
+		y = myLocs[i].y*1000;
+
+		gl::drawSolidCircle( Vec2f( x , y ), 3.4f );
+
+	}
+
+
+	
 
 	
 
