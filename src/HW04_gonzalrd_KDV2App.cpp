@@ -3,6 +3,7 @@
 #include "cinder/gl/gl.h"
 #include "cinder/ImageIo.h"
 #include "cinder/gl/Texture.h"
+#include "cinder\Surface.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -24,8 +25,17 @@ class HW04_gonzalrd_KDV2App : public AppBasic {
 	void update();
 	void draw();
 	Entry*read();
+	
+
+
+private:
+	Surface* map;
 	int size;
 	gl::Texture myImage;
+
+	static const int kAppWidth=800;
+	static const int kAppHeight=600;
+	static const int kTextureSize=1024;
 	
 
 };
@@ -76,13 +86,23 @@ Entry* HW04_gonzalrd_KDV2App::read()
 	
 }
 
+
+
 void HW04_gonzalrd_KDV2App::setup()
 {
 
 	myImage = gl::Texture( loadImage("usa-map.jpg"));
+
+
 //	gonzalrdStarbucks star;
-//
-//	Entry*myLocs = read();
+
+	//This is the setup that everyone needs to do
+	
+	
+	
+
+    Entry*myLocs = read();
+
 
 //	star.build(myLocs,size);
 
@@ -97,6 +117,7 @@ void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 
 void HW04_gonzalrd_KDV2App::update()
 {
+
 }
 
 void HW04_gonzalrd_KDV2App::draw()
@@ -105,6 +126,17 @@ void HW04_gonzalrd_KDV2App::draw()
 	gl::clear( Color( 0, 0, 0 ) ); 
 
 	gl::draw( myImage, getWindowBounds() );
+
+
+	
+
+	gl::color(Color(0.7f, 0.3f, 0.2f));
+
+	gl::drawSolidCircle( Vec2f( 100.0f, 100.0f ), 3.4f );
+
+	
+
+	
 }
 
 CINDER_APP_BASIC( HW04_gonzalrd_KDV2App, RendererGl )
