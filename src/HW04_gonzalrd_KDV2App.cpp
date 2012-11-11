@@ -22,9 +22,14 @@ class HW04_gonzalrd_KDV2App : public AppBasic {
 
   public:
 	void setup();
+	//void keyDown(keyDown event);
 	void mouseDown( MouseEvent event );	
 	void update();
 	void draw();
+	void zoom();
+	void drawLocs(uint8_t* pixels);
+	void drawCircle(uint8_t* pixels, int center_x, int center_y, int r, Color8u c);
+	void prepareSettings(Settings* settings);
 	Entry*read();
 	
 
@@ -37,11 +42,12 @@ private:
 	int mapHeight;
 	Entry*myLocs;
 	CameraPersp mCam;
+
 	
 
-	static const int kAppWidth=800;
-	static const int kAppHeight=600;
-	static const int kTextureSize=1024;
+	static const int kAppWidth=1126;
+	static const int kAppHeight= 674;
+	static const int kTextureSize=2048;
 	
 
 };
@@ -92,26 +98,39 @@ Entry* HW04_gonzalrd_KDV2App::read()
 	
 }
 
+void HW04_gonzalrd_KDV2App::prepareSettings(Settings* settings){
+	(*settings).setWindowSize(kAppWidth,kAppHeight);
+	(*settings).setResizable(false);
+}
+
 
 
 void HW04_gonzalrd_KDV2App::setup()
 {
 
-	myImage = gl::Texture( loadImage("usa-map2.jpg"));
-	mapWidth = myImage.getWidth();
-	mapHeight = myImage.getHeight();
+	map = new Surface(loadImage("usa-map.jpg"));
+
+	uint8_t* dataArray = (*map).getData();
+
+	
+	
+
+	
+
+	//mapWidth = myImage.getWidth();
+	//mapHeight = myImage.getHeight();
 
 //	gonzalrdStarbucks star;
 
-	mCam.setPerspective( 60.0f, mapWidth/mapHeight, 5.0f, 400.0f );
+	//set up for camera for zoom
+	mCam.setPerspective( 60.0f, getWindowAspectRatio(), 5.0f, -1.0f);
 
-	Vec3f mEye  = Vec3f( 0.0f, 0.0f, 500.0f );
-	Vec3f mCenter = Vec3f::zero();
-	Vec3f mUp  =  Vec3f::yAxis();
-	
-	mCam.lookAt( mEye, mCenter, mUp );
 
-   myLocs = read();
+
+   myLocs = read();   
+
+   drawLocs(dataArray);
+
 
 
 //	star.build(myLocs,size);
@@ -120,17 +139,87 @@ void HW04_gonzalrd_KDV2App::setup()
 
 }
 
+//Goal D.
+void HW04_gonzalrd_KDV2App::zoom(){
+
+	Vec3f mEye  = Vec3f( 0.0f, 0.0f, 7000.0f );
+	Vec3f mCenter = Vec3f::zero();
+	Vec3f mUp  =  Vec3f::zAxis();
+	
+	mCam.lookAt( mEye, mCenter, mUp );
+
+	mCam.setAspectRatio( getWindowAspectRatio() );
+
+	gl::setMatrices(mCam);
+
+}
+
 void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 {
 	float x = event.getX();
 	float y = event.getY();
 
-	gl::setMatrices( mCam );
+	zoom();
 
 }
 
+//void HW04_gonzalrd_KDV2App::keyDown( KeyDown event){
+
+
+//}
+
 void HW04_gonzalrd_KDV2App::update()
 {
+	//writeImage("gonzalrd.png",*map);
+}
+
+void HW04_gonzalrd_KDV2App::drawCircle(uint8_t* pixels, int center_x, int center_y, int r, Color8u c){
+	for(int y = center_y-r; y<=center_y+r; y++){
+		for(int  x =center_x-r; x<=center_x+r; x++){
+			//Bounds test, to make sure we don't access array out of bounds
+			if(y < 0 || x < 0 || x >= kAppWidth || y >= kAppHeight) continue;
+			
+					
+			int dist = (int)sqrt((double)((x-center_x)*(x-center_x) + (y-center_y)*(y-center_y)));
+			if(dist <= r){
+
+				int offset = x + y*kAppWidth;
+					pixels[3*(offset)] =  c.r;
+					pixels[3*(offset)+1] = c.b;
+					pixels[3*(offset)+2] =  c.g;
+				
+			}
+		}
+	}
+}
+
+//Goal A
+void HW04_gonzalrd_KDV2App::drawLocs(uint8_t* pixels){
+	int x;
+	int y;
+
+	float refx;
+	float refy;
+
+	int rad = 2;
+
+	Color8u c = Color8u(12,100,130);
+
+	for(int i = 0; i<1; i++){
+		//if(myLocs[i].x < 0.61 && myLocs[i].x >0.56 && myLocs[i].y < .72 && myLocs[i].y < .70 ){
+
+		// = .5-myLocs[i].x;
+		// =  .5-myLocs[i].y;
+
+		x =  myLocs[i].x*kAppWidth;
+		y =  myLocs[i].y*kAppHeight;
+
+		drawCircle(pixels, x, y , rad , c);
+
+		//gl::drawSolidCircle( Vec2f( x, y ), 10.0f );
+		
+	
+	}
 
 }
 
@@ -139,24 +228,7 @@ void HW04_gonzalrd_KDV2App::draw()
 	// clear out the window with black
 	//gl::clear( Color( 0, 0, 0 ) ); 
 
-	gl::draw( myImage, getWindowBounds());
-
-	float x;
-	float y;
-	
-	float refLine = .5;
-	
-	gl::color(Color(0.1f, 0.3f, 0.3f));
-
-	for(int i = 0; i<size; i++){
-		//if(myLocs[i].x < 0.61 && myLocs[i].x >0.56 && myLocs[i].y < .72 && myLocs[i].y < .70 ){
-		x = myLocs[i].x*mapWidth-200;
-		y = myLocs[i].y*mapHeight-200;
-		gl::drawSolidCircle( Vec2f( x , y ), 3.4f );
-		//}
-	
-	}
-
+	gl::draw(*map);
 	
 
 }
