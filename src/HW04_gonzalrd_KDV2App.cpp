@@ -123,7 +123,7 @@ void HW04_gonzalrd_KDV2App::setup()
 //	gonzalrdStarbucks star;
 
 	//set up for camera for zoom
-	mCam.setPerspective( 60.0f, getWindowAspectRatio(), 5.0f, -1.0f);
+	mCam.setPerspective( 60.0f, getWindowAspectRatio(), 5.0f, 3000.0f);
 
 
 
@@ -142,9 +142,9 @@ void HW04_gonzalrd_KDV2App::setup()
 //Goal D.
 void HW04_gonzalrd_KDV2App::zoom(){
 
-	Vec3f mEye  = Vec3f( 0.0f, 0.0f, 7000.0f );
-	Vec3f mCenter = Vec3f::zero();
-	Vec3f mUp  =  Vec3f::zAxis();
+	Vec3f mEye  = Vec3f( 0.0f, 0.0f, 500.0f );
+	Vec3f mCenter = Vec3f(200.0f, 200.0f , 0.0f);
+	Vec3f mUp  =  Vec3f::yAxis();
 	
 	mCam.lookAt( mEye, mCenter, mUp );
 
