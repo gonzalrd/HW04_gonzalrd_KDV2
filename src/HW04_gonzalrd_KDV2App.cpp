@@ -103,10 +103,10 @@ void HW04_gonzalrd_KDV2App::setup()
 
 //	gonzalrdStarbucks star;
 
-	mCam.setPerspective( 60.0f, mapWidth/mapHeight, 5.0f, 3000.0f );
+	mCam.setPerspective( 60.0f, mapWidth/mapHeight, 5.0f, 400.0f );
 
-	Vec3f mEye  = Vec3f( 20.0f, 200.0f, 100.0f );
-	Vec3f mCenter = Vec3f::zero();
+	Vec3f mEye  = Vec3f( 0.0f, 0.0f, 500.0f );
+	Vec3f mCenter = Vec3f(200.0f , 50.0f, 1000.f);
 	Vec3f mUp  =  Vec3f::yAxis();
 	
 	mCam.lookAt( mEye, mCenter, mUp );
@@ -149,11 +149,11 @@ void HW04_gonzalrd_KDV2App::draw()
 	gl::color(Color(0.1f, 0.3f, 0.3f));
 
 	for(int i = 0; i<size; i++){
-		if(myLocs[i].x < 0.61 && myLocs[i].x >0.56 && myLocs[i].y < .72 && myLocs[i].y < .70 ){
-		x = myLocs[i].x*mapWidth+100;
-		y = myLocs[i].y*mapHeight+40;
+		//if(myLocs[i].x < 0.61 && myLocs[i].x >0.56 && myLocs[i].y < .72 && myLocs[i].y < .70 ){
+		x = myLocs[i].x*mapWidth-200;
+		y = myLocs[i].y*mapHeight-200;
 		gl::drawSolidCircle( Vec2f( x , y ), 3.4f );
-		}
+		//}
 	
 	}
 
