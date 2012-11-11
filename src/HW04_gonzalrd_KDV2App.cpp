@@ -97,7 +97,7 @@ Entry* HW04_gonzalrd_KDV2App::read()
 void HW04_gonzalrd_KDV2App::setup()
 {
 
-	myImage = gl::Texture( loadImage("usa-map.jpg"));
+	myImage = gl::Texture( loadImage("usa-map2.jpg"));
 	mapWidth = myImage.getWidth();
 	mapHeight = myImage.getHeight();
 
@@ -106,7 +106,7 @@ void HW04_gonzalrd_KDV2App::setup()
 	mCam.setPerspective( 60.0f, mapWidth/mapHeight, 5.0f, 400.0f );
 
 	Vec3f mEye  = Vec3f( 0.0f, 0.0f, 500.0f );
-	Vec3f mCenter = Vec3f(200.0f , 50.0f, 1000.f);
+	Vec3f mCenter = Vec3f::zero();
 	Vec3f mUp  =  Vec3f::yAxis();
 	
 	mCam.lookAt( mEye, mCenter, mUp );
@@ -139,7 +139,7 @@ void HW04_gonzalrd_KDV2App::draw()
 	// clear out the window with black
 	//gl::clear( Color( 0, 0, 0 ) ); 
 
-	gl::draw( myImage, getWindowBounds() );
+	gl::draw( myImage, getWindowBounds());
 
 	float x;
 	float y;
