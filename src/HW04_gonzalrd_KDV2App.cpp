@@ -158,7 +158,6 @@ void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 {
 	float x = event.getX();
 	float y = event.getY();
-
 	zoom();
 
 }
@@ -203,21 +202,35 @@ void HW04_gonzalrd_KDV2App::drawLocs(uint8_t* pixels){
 
 	int rad = 2;
 
-	Color8u c = Color8u(12,100,130);
 
-	for(int i = 0; i<1; i++){
-		//if(myLocs[i].x < 0.61 && myLocs[i].x >0.56 && myLocs[i].y < .72 && myLocs[i].y < .70 ){
+	for(int i = 0; i<size; i++){
 
-		// = .5-myLocs[i].x;
-		// =  .5-myLocs[i].y;
+		//Northeast cost
+		if(myLocs[i].x < 1 && myLocs[i].x > 0.7 && myLocs[i].y < .8 && myLocs[i].y > 0 ){
 
-		x =  myLocs[i].x*kAppWidth;
-		y =  myLocs[i].y*kAppHeight;
+		//x =  myLocs[i].x*1000 + 250;
+		//y =  myLocs[i].y*1000 + 100;
+			
+		x =  myLocs[i].x*1124;
+		y =  myLocs[i].y*670;
+
+		Color8u c = Color8u(22,103,70);
 
 		drawCircle(pixels, x, y , rad , c);
-
-		//gl::drawSolidCircle( Vec2f( x, y ), 10.0f );
+		}
 		
+		//the midwest to california
+		if(myLocs[i].x < 0.7 && myLocs[i].x > 0 && myLocs[i].y < .8 && myLocs[i].y > 0 ){
+
+		//x =  myLocs[i].x*1000 + 130;
+		//y =  myLocs[i].y*1000 + 170;
+
+		x =  myLocs[i].x*1124;
+		y =  myLocs[i].y*670;
+
+		Color8u c = Color8u(12,100,130);
+		drawCircle(pixels, x, y , rad , c);
+		}
 	
 	}
 
