@@ -152,12 +152,15 @@ void HW04_gonzalrd_KDV2App::zoom(){
 
 	gl::setMatrices(mCam);
 
-}
 
+}
+	
 void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 {
-	float x = event.getX();
-	float y = event.getY();
+
+	uint8_t* dataArray = (*map).getData();
+	int x = event.getX();
+	int y = event.getY();
 	zoom();
 
 }
@@ -192,45 +195,36 @@ void HW04_gonzalrd_KDV2App::drawCircle(uint8_t* pixels, int center_x, int center
 	}
 }
 
-//Goal A
+//Goal A and C;
 void HW04_gonzalrd_KDV2App::drawLocs(uint8_t* pixels){
 	int x;
 	int y;
 
-	float refx;
-	float refy;
-
 	int rad = 2;
 
+	int red = 0;
+	int green=  10;
+	int blue = 20;
 
+	
 	for(int i = 0; i<size; i++){
 
-		//Northeast cost
-		if(myLocs[i].x < 1 && myLocs[i].x > 0.7 && myLocs[i].y < .8 && myLocs[i].y > 0 ){
+		green +=20;
+		blue +=40;
 
-		//x =  myLocs[i].x*1000 + 250;
-		//y =  myLocs[i].y*1000 + 100;
+		Color8u c = Color8u(red,green,blue);
+
 			
 		x =  myLocs[i].x*1124;
 		y =  myLocs[i].y*670;
 
-		Color8u c = Color8u(22,103,70);
 
-		drawCircle(pixels, x, y , rad , c);
-		}
-		
-		//the midwest to california
-		if(myLocs[i].x < 0.7 && myLocs[i].x > 0 && myLocs[i].y < .8 && myLocs[i].y > 0 ){
-
-		//x =  myLocs[i].x*1000 + 130;
-		//y =  myLocs[i].y*1000 + 170;
 
 		x =  myLocs[i].x*1124;
 		y =  myLocs[i].y*670;
 
-		Color8u c = Color8u(12,100,130);
 		drawCircle(pixels, x, y , rad , c);
-		}
+		
 	
 	}
 
