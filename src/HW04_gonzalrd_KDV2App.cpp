@@ -28,8 +28,8 @@ class HW04_gonzalrd_KDV2App : public AppBasic {
 	void update();
 	void draw();
 	void zoom();
-	vector<Census> readCensus(string name);
-	void drawChangDensity(uint8_t* pixels);
+	vector<Census> readCensus(string name,int start, int end);//start and end values so that I dont have to read in all the data at once. Makes it entirely to slow
+	void drawChangDensity(uint8_t* pixels,int start, int end);
 	void drawLocs(uint8_t* pixels);
 	void drawCircle(uint8_t* pixels, int center_x, int center_y, int r, Color8u c);
 	void prepareSettings(Settings* settings);
@@ -46,6 +46,8 @@ private:
 	int mapHeight;
 	Entry*myLocs;
 	CameraPersp mCam;
+	gonzalrdStarbucks star;
+	uint8_t* dataArray
 
 
 	
@@ -110,7 +112,7 @@ void HW04_gonzalrd_KDV2App::prepareSettings(Settings* settings){
 }
 
 //Goal E and F and G. Reads in the data from the Census
-vector<Census> HW04_gonzalrd_KDV2App::readCensus(string name)
+vector<Census> HW04_gonzalrd_KDV2App::readCensus(string name, int start, int end)
 {
 	vector<Census> readCen;
 	ifstream in (name);
@@ -125,7 +127,7 @@ vector<Census> HW04_gonzalrd_KDV2App::readCensus(string name)
 	
 	
 	//while(!in.eof()){
-	for(int i =0; i<2000; i++){
+	for(int i =start; i<end; i++){
 	in >> n;
 	in.get();
 	in >> j;
@@ -167,20 +169,17 @@ void HW04_gonzalrd_KDV2App::setup()
 
 	uint8_t* dataArray = (*map).getData();
 
-//	gonzalrdStarbucks star;
-
 //set up for camera for zoom
 //mCam.setPerspective( 60.0f, getWindowAspectRatio(), 5.0f, kTextureSize);
 
    myLocs = read();   
 
-   drawChangDensity(dataArray);
+   drawChangDensity(dataArray, 500, 3000);
 
   // drawLocs(dataArray);
 
-//	star.build(myLocs,size);
+	star.build(myLocs,size);
 
-  // Entry* BEST = star.getNearest(.421, .675);
 
 }
 
@@ -207,13 +206,13 @@ void drawRegion(uint8_t* pixels, int x1, int y1,  int rect_width, int rect_heigh
 }
 
 //GOAL E and F
-void HW04_gonzalrd_KDV2App::drawChangDensity(uint8_t* pixels){
+void HW04_gonzalrd_KDV2App::drawChangDensity(uint8_t* pixels,int start, int end){
 	//read in the data
-	vector<Census> Cen2000 = readCensus("Census_2000.csv");
-	vector<Census> Cen2010 = readCensus("Census_2010.csv");
+	vector<Census> Cen2000 = readCensus("Census_2000.csv",  start,  end);
+	vector<Census> Cen2010 = readCensus("Census_2010.csv", start,  end);
 
-	Color8u red = Color8u(150,0,0);
-	Color8u green  = Color8u(0,0,150);
+	Color8u red = Color8u(190,0,0);
+	Color8u green  = Color8u(0,0,197);
 
 	for(int i = 0; i< Cen2000.size(); i++){
 		float density2000 = Cen2000[i].starbucks/Cen2000[i].pepPerStar;
@@ -223,20 +222,26 @@ void HW04_gonzalrd_KDV2App::drawChangDensity(uint8_t* pixels){
 			int x = Cen2000[i].x*kAppWidth;
 			int y = Cen2000[i].y*kAppHeight;
 			
-			//for(int n = x-200; n < x+200; n++){
-				int offset = x + y*kTextureSize;
-					pixels[3*(offset)] =  red.r;	
-			//}
+			for(int n = x; n < x+5; n++){
+				for(int j = y; j < y+5; j++){
+				int offset = n + j*kAppWidth;
+					pixels[3*(offset)] =  red.r;
+				}
+			}
 		}
 
 		else if(density2000 < density2010){//if densisty increases
 			int x = Cen2000[i].x*kAppWidth;
 			int y = Cen2000[i].y*kAppHeight;
 
-			int offset = x + y*kTextureSize;
+					
+			for(int w = x; w < x+5; w++){
+				for(int l = y; l < y+5; l++){
+					int offset = w + l*kAppWidth;
 					
 					pixels[3*(offset)+1] = green.g;
-					
+				}
+			}
 		}
 
 	}
@@ -245,8 +250,16 @@ void HW04_gonzalrd_KDV2App::drawChangDensity(uint8_t* pixels){
 	
 void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 {
-	int x = event.getX();
-	int y = event.getY();
+	double x = event.getX()/kAppWidth;
+	double y = event.getY()/kAppHeight;
+
+	Entry* BEST = star.getNearest(x, y);
+
+	double drawX = BEST->x*kAppWidth;
+	double drawY = BEST->y*kAppHeight;
+
+	
+
 }
 
 
@@ -293,11 +306,11 @@ void HW04_gonzalrd_KDV2App::drawLocs(uint8_t* pixels){
 		blue +=40;
 
 		Color8u c = Color8u(red,green,blue);
-		x =  myLocs[i].x*1124;
-		y =  myLocs[i].y*670;
+		x =  myLocs[i].x*kAppWidth;
+		y =  myLocs[i].y*kAppHeight;
 
-		x =  myLocs[i].x*1124;
-		y =  myLocs[i].y*670;
+		x =  myLocs[i].x*kAppWidth;
+		y =  myLocs[i].y*kAppHeight;
 
 		drawCircle(pixels, x, y , rad , c);
 		
