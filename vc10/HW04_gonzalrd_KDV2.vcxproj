@@ -111,6 +111,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\include\Starbucks.h" />
+    <ClInclude Include="Census.h" />
     <ClInclude Include="gonzalrdStarbucks.h" />
     <ClInclude Include="Node.h" />
   </ItemGroup>
