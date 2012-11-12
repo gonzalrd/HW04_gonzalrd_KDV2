@@ -27,13 +27,7 @@ class HW04_gonzalrd_KDV2App : public AppBasic {
 	void mouseDown( MouseEvent event );	
 	void update();
 	void draw();
-	void zoom();
-	vector<Census> readCensus(string name,int start, int end);//start and end values so that I dont have to read in all the data at once. Makes it entirely to slow
-	void drawChangDensity(uint8_t* pixels,int start, int end);
-	void drawLocs(uint8_t* pixels);
-	void drawCircle(uint8_t* pixels, int center_x, int center_y, int r, Color8u c);
 	void prepareSettings(Settings* settings);
-	void drawRegion(uint8_t* pixels, int x1, int y1,  int rect_width, int rect_height, Color8u c);
 	Entry*read();
 	
 
@@ -55,6 +49,12 @@ private:
 	static const int kAppWidth=1126;
 	static const int kAppHeight= 674;
 	static const int kTextureSize=2048;
+
+	void zoom();
+	vector<Census> readCensus(string name,int start, int end);//start and end values so that I dont have to read in all the data at once. Makes it entirely to slow
+	void drawChangDensity(uint8_t* pixels,int start, int end);
+	void drawLocs(uint8_t* pixels);
+	void drawCircle(uint8_t* pixels, int center_x, int center_y, int r, Color8u c);
 	
 
 };
@@ -174,7 +174,7 @@ void HW04_gonzalrd_KDV2App::setup()
 
    myLocs = read();   
 
-   drawChangDensity(dataArray, 500, 3000);
+   //drawChangDensity(dataArray, 500, 3000);
 
   // drawLocs(dataArray);
 
@@ -183,7 +183,7 @@ void HW04_gonzalrd_KDV2App::setup()
 
 }
 
-//Goal D.
+//Goal D.-not implemented
 void HW04_gonzalrd_KDV2App::zoom(){
 
 	Vec3f mEye  = Vec3f( 0.0f, 0.0f, 500.0f );
@@ -198,12 +198,6 @@ void HW04_gonzalrd_KDV2App::zoom(){
 
 }
 
-//draws a region for Goal e and f
-void drawRegion(uint8_t* pixels, int x1, int y1,  int rect_width, int rect_height, Color8u c){
-
-
-
-}
 
 //GOAL E and F
 void HW04_gonzalrd_KDV2App::drawChangDensity(uint8_t* pixels,int start, int end){
@@ -255,10 +249,11 @@ void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 
 	Entry* BEST = star.getNearest(x, y);
 
-	double drawX = BEST->x*kAppWidth;
-	double drawY = BEST->y*kAppHeight;
+	int drawX = BEST->x*kAppWidth;
+	int drawY = BEST->y*kAppHeight;
 
-	
+	Color8u c = Color8u(100,100,150);
+	drawCircle(dataArray, drawX, drawY, 10,  c);
 
 }
 
@@ -320,12 +315,9 @@ void HW04_gonzalrd_KDV2App::drawLocs(uint8_t* pixels){
 
 void HW04_gonzalrd_KDV2App::draw()
 {
-	// clear out the window with black
-	//gl::clear( Color( 0, 0, 0 ) ); 
-
+	
 	gl::draw(*map);
 	
-
 }
 
 CINDER_APP_BASIC( HW04_gonzalrd_KDV2App, RendererGl )
