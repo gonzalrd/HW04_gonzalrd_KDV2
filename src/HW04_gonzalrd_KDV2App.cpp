@@ -245,12 +245,12 @@ void HW04_gonzalrd_KDV2App::drawChangDensity(uint8_t* pixels,int start, int end)
 void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 {
 	double x = event.getX()/kAppWidth;
-	double y = event.getY()/kAppHeight;
+	double y = 1-(event.getY()/kAppHeight);
 
 	Entry* BEST = star.getNearest(x, y);
 
 	int drawX = BEST->x*kAppWidth;
-	int drawY = BEST->y*kAppHeight;
+	int drawY = (1-BEST->y)*kAppHeight;
 
 	Color8u c = Color8u(100,100,150);
 	drawCircle(dataArray, drawX, drawY, 10,  c);
@@ -325,8 +325,6 @@ void HW04_gonzalrd_KDV2App::drawLocs(uint8_t* pixels){
 		blue +=40;
 
 		Color8u c = Color8u(red,green,blue);
-		x =  myLocs[i].x*kAppWidth;
-		y =  myLocs[i].y*kAppHeight;
 
 		x =  myLocs[i].x*kAppWidth;
 		y =  (1-myLocs[i].y)*kAppHeight;
