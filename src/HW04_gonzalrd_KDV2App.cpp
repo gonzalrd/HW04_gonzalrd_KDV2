@@ -185,6 +185,8 @@ void HW04_gonzalrd_KDV2App::setup()
 
 	star.build(myLocs,size);
 
+	int count = star.SearchRegion(.421, .645, .3);
+
 }
 
 //Goal D.-not implemented
@@ -274,9 +276,10 @@ void HW04_gonzalrd_KDV2App::update()
 	int drawX = BEST->x*kAppWidth;
 	int drawY = (1-BEST->y)*kAppHeight;
 
+	if(currentX != -1 && currentY != -1){
 	Color8u c = Color8u(150,150,0);
 	drawCircle(dataArray, drawX, drawY, 10,  c);
-	
+	}
 }
 
 void HW04_gonzalrd_KDV2App::drawCircle(uint8_t* pixels, int center_x, int center_y, int r, Color8u c){

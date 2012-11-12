@@ -152,3 +152,18 @@ Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
 		else return cur->leftChild_->data_;
 
 }
+
+int gonzalrdStarbucks :: SearchRegion(double x , double y , double rad){
+
+	return searchInArea(root, x,y,rad);
+}
+//search in region for population density - help from Nick Uth to do this
+int gonzalrdStarbucks :: searchInArea(Node*cur, double x, double y, double rad){
+		if(cur == NULL) return 0;
+		double dist = sqrt((cur->data_->x-x)*(cur->data_->x-x) + (cur->data_->y-y)*(cur->data_->x-y));
+
+		if(rad < dist) return 0;
+
+		return 1 + searchInArea(cur->leftChild_, x , y, rad) + searchInArea(cur->rightChild_, x,y, rad);
+
+}
