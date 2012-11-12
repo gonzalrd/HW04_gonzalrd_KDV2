@@ -185,11 +185,10 @@ void HW04_gonzalrd_KDV2App::setup()
 
 	star.build(myLocs,size);
 
-	int count = star.SearchRegion(.421, .645, .3);
 
 }
 
-//Goal D.-not implemented
+//Goal D. 
 void HW04_gonzalrd_KDV2App::zoom(){
 
 	Vec3f mEye  = Vec3f( 0.0f, 0.0f, 500.0f );
@@ -212,16 +211,18 @@ void HW04_gonzalrd_KDV2App::drawChangDensity(uint8_t* pixels,int start, int end)
 
 	Color8u red = Color8u(190,0,0);
 	Color8u green  = Color8u(0,0,197);
+	double searchRad = .3;
 
 	for(int i = 0; i< Cen2000.size(); i++){
-		float density2000 = 1/Cen2000[i].population;
-		float  density2010 = 1/Cen2010[i].population;
+		int starbucks = star.SearchRegion(Cen2000[i].x, Cen2000[i].y, searchRad);
+		float density2000 = starbucks/Cen2000[i].population;
+		float  density2010 = starbucks/Cen2010[i].population;
 
 		int x = Cen2000[i].x*kAppWidth;
 		int y = Cen2000[i].y*kAppHeight;
 
-		for(int n = x; n < x+20; n++){
-		for(int j = y; j < y+20; j++){
+		for(int n = x; n < x+15; n++){
+		for(int j = y; j < y+15; j++){
 			int offset = n + j*kAppWidth;
 
 		if(density2000 > density2010){//if densisty decreased color the region red
