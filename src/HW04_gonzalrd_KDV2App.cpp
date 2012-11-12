@@ -12,6 +12,8 @@
 #include "Starbucks.h"
 #include "../vc10/gonzalrdStarbucks.h"
 #include "../vc10/Census.h"
+#include "cinder/Font.h"
+#include "cinder/Text.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -27,6 +29,7 @@ class HW04_gonzalrd_KDV2App : public AppBasic {
 	void mouseDown( MouseEvent event );	
 	void update();
 	void draw();
+	void render();
 	void prepareSettings(Settings* settings);
 	Entry*read();
 	
@@ -36,12 +39,12 @@ private:
 	Surface* map;
 	int size;
 	gl::Texture myImage;
-	int mapWidth;
-	int mapHeight;
 	Entry*myLocs;
 	CameraPersp mCam;
 	gonzalrdStarbucks star;
 	uint8_t* dataArray;
+	Vec2i	tSize;
+	gl::Texture texture_font_;
 
 
 	
@@ -169,6 +172,8 @@ void HW04_gonzalrd_KDV2App::setup()
 
 	 dataArray = (*map).getData();
 
+	 tSize = Vec2i(600,30);
+		render();
 //set up for camera for zoom
 //mCam.setPerspective( 60.0f, getWindowAspectRatio(), 5.0f, kTextureSize);
 
@@ -179,7 +184,6 @@ void HW04_gonzalrd_KDV2App::setup()
   // drawLocs(dataArray);
 
 	star.build(myLocs,size);
-
 
 }
 
@@ -257,6 +261,18 @@ void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 
 }
 
+void HW04_gonzalrd_KDV2App::render(){
+
+	Font ft  = Font("Times new roman",20);
+	string ms = "Press d to see density change, l to see all locations and click to get Nearest-but you may need to travel across country or swim";
+	TextBox tbox = TextBox().alignment( TextBox::CENTER ).font(ft).size( tSize.x, tSize.y ).text( ms );
+	tbox.setColor( Color( 0.0f, 0.85f, 1.0f ) );
+	tbox.setBackgroundColor( ColorA( 0.5, 0, 0, 1 ) );
+	Vec2i sz = tbox.measure();
+	console() << "Height: " << sz.y << endl;
+	texture_font_ = gl::Texture( tbox.render() );
+
+}
 
 void HW04_gonzalrd_KDV2App::update()
 {
@@ -317,7 +333,7 @@ void HW04_gonzalrd_KDV2App::draw()
 {
 	
 	gl::draw(*map);
-	
+	gl::draw(texture_font_);
 }
 
 CINDER_APP_BASIC( HW04_gonzalrd_KDV2App, RendererGl )
