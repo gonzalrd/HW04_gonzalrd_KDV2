@@ -240,8 +240,10 @@ void HW04_gonzalrd_KDV2App::drawChangDensity(uint8_t* pixels,int start, int end)
 	
 void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 {
-	currentX = event.getX()/kAppWidth;
-	currentY = 1-(event.getY()/kAppHeight);
+	int x = event.getX();
+	int y = event.getY();
+	currentX = (double) x/kAppWidth;
+	currentY =  1-((double) y/kAppHeight);
 
 }
 
@@ -277,7 +279,7 @@ void HW04_gonzalrd_KDV2App::update()
 	int drawX = BEST->x*kAppWidth;
 	int drawY = (1-BEST->y)*kAppHeight;
 
-	if(currentX != -1 && currentY != -1){
+	if(currentX > -1 && currentY > -1){
 	Color8u c = Color8u(150,150,0);
 	drawCircle(dataArray, drawX, drawY, 10,  c);
 	}
