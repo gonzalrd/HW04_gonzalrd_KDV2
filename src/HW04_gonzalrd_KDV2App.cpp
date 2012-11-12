@@ -329,7 +329,7 @@ void HW04_gonzalrd_KDV2App::drawLocs(uint8_t* pixels){
 		y =  myLocs[i].y*kAppHeight;
 
 		x =  myLocs[i].x*kAppWidth;
-		y =  myLocs[i].y*kAppHeight;
+		y =  (1-myLocs[i].y)*kAppHeight;
 
 		drawCircle(pixels, x, y , rad , c);
 		
