@@ -29,9 +29,11 @@ class HW04_gonzalrd_KDV2App : public AppBasic {
 	void draw();
 	void zoom();
 	vector<Census> readCensus(string name);
+	void drawChangDensity(uint8_t* pixels);
 	void drawLocs(uint8_t* pixels);
 	void drawCircle(uint8_t* pixels, int center_x, int center_y, int r, Color8u c);
 	void prepareSettings(Settings* settings);
+	void drawRegion(uint8_t* pixels, int x1, int y1,  int rect_width, int rect_height, Color8u c);
 	Entry*read();
 	
 
@@ -107,11 +109,10 @@ void HW04_gonzalrd_KDV2App::prepareSettings(Settings* settings){
 	(*settings).setResizable(false);
 }
 
+//Goal E and F and G. Reads in the data from the Census
 vector<Census> HW04_gonzalrd_KDV2App::readCensus(string name)
 {
-
 	vector<Census> readCen;
-	
 	ifstream in (name);
 
 	int n;
@@ -123,9 +124,8 @@ vector<Census> HW04_gonzalrd_KDV2App::readCensus(string name)
 	double pepPerStar;
 	
 	
-	while(!in.eof()){
-
-	//in.get();
+	//while(!in.eof()){
+	for(int i =0; i<2000; i++){
 	in >> n;
 	in.get();
 	in >> j;
@@ -145,6 +145,7 @@ vector<Census> HW04_gonzalrd_KDV2App::readCensus(string name)
 	data->y = y;
 	data->population = population;
 	data->starbucks = starbucks;
+	data-> pepPerStar = pepPerStar;
 	
 	readCen.push_back(*data);
 
@@ -160,7 +161,7 @@ vector<Census> HW04_gonzalrd_KDV2App::readCensus(string name)
 void HW04_gonzalrd_KDV2App::setup()
 {
 
-	vector<Census> Cen2000 = readCensus("Census_2000.csv");
+
 
 	map = new Surface(loadImage("usa-map.jpg"));
 
@@ -168,16 +169,14 @@ void HW04_gonzalrd_KDV2App::setup()
 
 //	gonzalrdStarbucks star;
 
-	//set up for camera for zoom
-	mCam.setPerspective( 60.0f, getWindowAspectRatio(), 5.0f, kTextureSize);
-
-
+//set up for camera for zoom
+//mCam.setPerspective( 60.0f, getWindowAspectRatio(), 5.0f, kTextureSize);
 
    myLocs = read();   
 
-   drawLocs(dataArray);
+   drawChangDensity(dataArray);
 
-
+  // drawLocs(dataArray);
 
 //	star.build(myLocs,size);
 
@@ -194,27 +193,62 @@ void HW04_gonzalrd_KDV2App::zoom(){
 	
 	mCam.lookAt( mEye, mCenter, mUp );
 
-	mCam.setAspectRatio( getWindowAspectRatio() );
+	mCam.setAspectRatio(getWindowAspectRatio());
 
 	gl::setMatrices(mCam);
 
+}
+
+//draws a region for Goal e and f
+void drawRegion(uint8_t* pixels, int x1, int y1,  int rect_width, int rect_height, Color8u c){
+
+
+
+}
+
+//GOAL E and F
+void HW04_gonzalrd_KDV2App::drawChangDensity(uint8_t* pixels){
+	//read in the data
+	vector<Census> Cen2000 = readCensus("Census_2000.csv");
+	vector<Census> Cen2010 = readCensus("Census_2010.csv");
+
+	Color8u red = Color8u(150,0,0);
+	Color8u green  = Color8u(0,0,150);
+
+	for(int i = 0; i< Cen2000.size(); i++){
+		float density2000 = Cen2000[i].starbucks/Cen2000[i].pepPerStar;
+		float  density2010= Cen2010[i].starbucks/Cen2010[i].pepPerStar;
+
+		if(density2000 > density2010){//if densisty decreased color the region red
+			int x = Cen2000[i].x*kAppWidth;
+			int y = Cen2000[i].y*kAppHeight;
+			
+			//for(int n = x-200; n < x+200; n++){
+				int offset = x + y*kTextureSize;
+					pixels[3*(offset)] =  red.r;	
+			//}
+		}
+
+		else if(density2000 < density2010){//if densisty increases
+			int x = Cen2000[i].x*kAppWidth;
+			int y = Cen2000[i].y*kAppHeight;
+
+			int offset = x + y*kTextureSize;
+					
+					pixels[3*(offset)+1] = green.g;
+					
+		}
+
+	}
 
 }
 	
 void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 {
-
-	uint8_t* dataArray = (*map).getData();
 	int x = event.getX();
 	int y = event.getY();
-	zoom();
-
 }
 
-//void HW04_gonzalrd_KDV2App::keyDown( KeyDown event){
-
-
-//}
 
 void HW04_gonzalrd_KDV2App::update()
 {
