@@ -11,6 +11,7 @@
 #include <vector>
 #include "Starbucks.h"
 #include "../vc10/gonzalrdStarbucks.h"
+#include "../vc10/Census.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -27,6 +28,7 @@ class HW04_gonzalrd_KDV2App : public AppBasic {
 	void update();
 	void draw();
 	void zoom();
+	vector<Census> readCensus(string name);
 	void drawLocs(uint8_t* pixels);
 	void drawCircle(uint8_t* pixels, int center_x, int center_y, int r, Color8u c);
 	void prepareSettings(Settings* settings);
@@ -42,6 +44,7 @@ private:
 	int mapHeight;
 	Entry*myLocs;
 	CameraPersp mCam;
+
 
 	
 
@@ -94,6 +97,7 @@ Entry* HW04_gonzalrd_KDV2App::read()
 		entries[n] = readLocs[n];
 	}
 
+	in.close();
 	return entries;
 	
 }
@@ -103,22 +107,64 @@ void HW04_gonzalrd_KDV2App::prepareSettings(Settings* settings){
 	(*settings).setResizable(false);
 }
 
+vector<Census> HW04_gonzalrd_KDV2App::readCensus(string name)
+{
+
+	vector<Census> readCen;
+	
+	ifstream in (name);
+
+	int n;
+	int j;
+	double x;
+	double y;
+	double starbucks;
+	double population;
+	double pepPerStar;
+	
+	
+	while(!in.eof()){
+
+	//in.get();
+	in >> n;
+	in.get();
+	in >> j;
+	in.get();
+	in >> population;
+	in.get();
+	in >> starbucks;
+	in.get();
+	in >> pepPerStar;
+	in.get();
+	in >> x;
+	in.get();
+	in >> y;
+	
+	Census* data = new Census();
+	data->x = x;
+	data->y = y;
+	data->population = population;
+	data->starbucks = starbucks;
+	
+	readCen.push_back(*data);
+
+	delete data;
+	
+	}
+
+	in.close();
+	return readCen;
+}
 
 
 void HW04_gonzalrd_KDV2App::setup()
 {
 
+	vector<Census> Cen2000 = readCensus("Census_2000.csv");
+
 	map = new Surface(loadImage("usa-map.jpg"));
 
 	uint8_t* dataArray = (*map).getData();
-
-	
-	
-
-	
-
-	//mapWidth = myImage.getWidth();
-	//mapHeight = myImage.getHeight();
 
 //	gonzalrdStarbucks star;
 
@@ -172,7 +218,7 @@ void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 
 void HW04_gonzalrd_KDV2App::update()
 {
-	//writeImage("gonzalrd.png",*map);
+	
 }
 
 void HW04_gonzalrd_KDV2App::drawCircle(uint8_t* pixels, int center_x, int center_y, int r, Color8u c){
@@ -213,19 +259,14 @@ void HW04_gonzalrd_KDV2App::drawLocs(uint8_t* pixels){
 		blue +=40;
 
 		Color8u c = Color8u(red,green,blue);
-
-			
 		x =  myLocs[i].x*1124;
 		y =  myLocs[i].y*670;
-
-
 
 		x =  myLocs[i].x*1124;
 		y =  myLocs[i].y*670;
 
 		drawCircle(pixels, x, y , rad , c);
 		
-	
 	}
 
 }
