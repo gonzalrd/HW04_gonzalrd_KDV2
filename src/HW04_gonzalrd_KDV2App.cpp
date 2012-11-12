@@ -47,7 +47,7 @@ private:
 	Entry*myLocs;
 	CameraPersp mCam;
 	gonzalrdStarbucks star;
-	uint8_t* dataArray
+	uint8_t* dataArray;
 
 
 	
@@ -167,7 +167,7 @@ void HW04_gonzalrd_KDV2App::setup()
 
 	map = new Surface(loadImage("usa-map.jpg"));
 
-	uint8_t* dataArray = (*map).getData();
+	 dataArray = (*map).getData();
 
 //set up for camera for zoom
 //mCam.setPerspective( 60.0f, getWindowAspectRatio(), 5.0f, kTextureSize);
