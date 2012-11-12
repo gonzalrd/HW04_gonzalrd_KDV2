@@ -47,6 +47,7 @@ private:
 	gl::Texture texture_font_;
 	double currentX;
 	double currentY;
+	string closest;
 
 
 	
@@ -168,7 +169,7 @@ vector<Census> HW04_gonzalrd_KDV2App::readCensus(string name, int start, int end
 
 void HW04_gonzalrd_KDV2App::setup()
 {
-
+	closest = "No current location selected";
 	currentX = -1;
 	currentY = -1;
 
@@ -188,7 +189,7 @@ void HW04_gonzalrd_KDV2App::setup()
 
 }
 
-//Goal D. 
+//Goal D. Not implemented
 void HW04_gonzalrd_KDV2App::zoom(){
 
 	Vec3f mEye  = Vec3f( 0.0f, 0.0f, 500.0f );
@@ -218,7 +219,7 @@ void HW04_gonzalrd_KDV2App::drawChangDensity(uint8_t* pixels,int start, int end)
 		float density2000 = starbucks/Cen2000[i].population;
 		float  density2010 = starbucks/Cen2010[i].population;
 
-		int x = Cen2000[i].x*kAppWidth;
+		int x = Cen2000[i].x*kAppWidth+40;
 		int y = Cen2000[i].y*kAppHeight;
 
 		for(int n = x; n < x+15; n++){
@@ -240,7 +241,7 @@ void HW04_gonzalrd_KDV2App::drawChangDensity(uint8_t* pixels,int start, int end)
 	
 void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 {
-	int x = event.getX();
+	int x = event.getX()-40;
 	int y = event.getY();
 	currentX = (double) x/kAppWidth;
 	currentY =  1-((double) y/kAppHeight);
@@ -261,7 +262,7 @@ void HW04_gonzalrd_KDV2App::keyDown(KeyEvent event){
 void HW04_gonzalrd_KDV2App::render(){
 
 	Font ft  = Font("Times new roman",20);
-	string ms = "Press d to see density change, l to see all locations and click to get Nearest-but you may need to travel across country or swim";
+	string ms = "Press d to see density change, l to see all locations and click to get Nearest starbucks Location-but you may need to swim " ;
 	TextBox tbox = TextBox().alignment( TextBox::CENTER ).font(ft).size( tSize.x, tSize.y ).text( ms );
 	tbox.setColor( Color( 0.0f, 0.85f, 1.0f ) );
 	tbox.setBackgroundColor( ColorA( 0, 0, 0, 0 ) );
@@ -276,13 +277,16 @@ void HW04_gonzalrd_KDV2App::update()
 
 	Entry* BEST = star.getNearest(currentX, currentY);
 
-	int drawX = BEST->x*kAppWidth;
+	closest = BEST->identifier;
+
+	int drawX = BEST->x*kAppWidth+40;
 	int drawY = (1-BEST->y)*kAppHeight;
 
 	if(currentX > -1 && currentY > -1){
 	Color8u c = Color8u(150,150,0);
 	drawCircle(dataArray, drawX, drawY, 10,  c);
 	}
+
 }
 
 void HW04_gonzalrd_KDV2App::drawCircle(uint8_t* pixels, int center_x, int center_y, int r, Color8u c){
@@ -324,7 +328,7 @@ void HW04_gonzalrd_KDV2App::drawLocs(uint8_t* pixels){
 
 		Color8u c = Color8u(red,green,blue);
 
-		x =  myLocs[i].x*kAppWidth;
+		x =  myLocs[i].x*kAppWidth+40;
 		y =  (1-myLocs[i].y)*kAppHeight;
 
 		drawCircle(pixels, x, y , rad , c);
