@@ -45,6 +45,8 @@ private:
 	uint8_t* dataArray;
 	Vec2i	tSize;
 	gl::Texture texture_font_;
+	double currentX;
+	double currentY;
 
 
 	
@@ -120,42 +122,43 @@ vector<Census> HW04_gonzalrd_KDV2App::readCensus(string name, int start, int end
 	vector<Census> readCen;
 	ifstream in (name);
 
-	int n;
-	int j;
+	int n;//dont care about this need to get to next one
+
 	double x;
 	double y;
-	double starbucks;
-	double population;
-	double pepPerStar;
 	
+	double population;
+
+	int count = 0; //keep track of data. Dont want to read in entire set
 	
 	//while(!in.eof()){
 	for(int i =start; i<end; i++){
-	in >> n;
-	in.get();
-	in >> j;
-	in.get();
-	in >> population;
-	in.get();
-	in >> starbucks;
-	in.get();
-	in >> pepPerStar;
-	in.get();
-	in >> x;
-	in.get();
-	in >> y;
-	
-	Census* data = new Census();
-	data->x = x;
-	data->y = y;
-	data->population = population;
-	data->starbucks = starbucks;
-	data-> pepPerStar = pepPerStar;
-	
-	readCen.push_back(*data);
 
-	delete data;
+			in >> n;
+			in.get();
+			in >> n;
+			in.get();
+			in >> n;
+			in.get();
+			in >> n;
+			in.get();
+			in >> population;
+			in.get();
+			in >> x;
+			in.get();
+			in >> y;
 	
+			Census* data = new Census();
+			data->x = x;
+			data->y = y;
+			data->population = population;
+		if(count % 50 == 0){
+	
+			readCen.push_back(*data);
+
+			delete data;
+		}
+		count ++;
 	}
 
 	in.close();
@@ -166,7 +169,8 @@ vector<Census> HW04_gonzalrd_KDV2App::readCensus(string name, int start, int end
 void HW04_gonzalrd_KDV2App::setup()
 {
 
-
+	currentX = -1;
+	currentY = -1;
 
 	map = new Surface(loadImage("usa-map.jpg"));
 
@@ -198,7 +202,6 @@ void HW04_gonzalrd_KDV2App::zoom(){
 
 }
 
-
 //GOAL E and F
 void HW04_gonzalrd_KDV2App::drawChangDensity(uint8_t* pixels,int start, int end){
 	//read in the data
@@ -209,31 +212,21 @@ void HW04_gonzalrd_KDV2App::drawChangDensity(uint8_t* pixels,int start, int end)
 	Color8u green  = Color8u(0,0,197);
 
 	for(int i = 0; i< Cen2000.size(); i++){
-		float density2000 = Cen2000[i].starbucks/Cen2000[i].pepPerStar;
-		float  density2010= Cen2010[i].starbucks/Cen2010[i].pepPerStar;
+		float density2000 = 1/Cen2000[i].population;
+		float  density2010 = 1/Cen2010[i].population;
+
+		int x = Cen2000[i].x*kAppWidth;
+		int y = Cen2000[i].y*kAppHeight;
+
+		for(int n = x; n < x+20; n++){
+		for(int j = y; j < y+20; j++){
+			int offset = n + j*kAppWidth;
 
 		if(density2000 > density2010){//if densisty decreased color the region red
-			int x = Cen2000[i].x*kAppWidth;
-			int y = Cen2000[i].y*kAppHeight;
-			
-			for(int n = x; n < x+5; n++){
-				for(int j = y; j < y+5; j++){
-				int offset = n + j*kAppWidth;
-					pixels[3*(offset)] =  red.r;
+			pixels[3*(offset)] =  red.r;
 				}
-			}
-		}
-
 		else if(density2000 < density2010){//if densisty increases
-			int x = Cen2000[i].x*kAppWidth;
-			int y = Cen2000[i].y*kAppHeight;
-
-					
-			for(int w = x; w < x+5; w++){
-				for(int l = y; l < y+5; l++){
-					int offset = w + l*kAppWidth;
-					
-					pixels[3*(offset)+1] = green.g;
+			pixels[3*(offset)+1] = green.g;
 				}
 			}
 		}
@@ -244,23 +237,15 @@ void HW04_gonzalrd_KDV2App::drawChangDensity(uint8_t* pixels,int start, int end)
 	
 void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 {
-	double x = event.getX()/kAppWidth;
-	double y = 1-(event.getY()/kAppHeight);
-
-	Entry* BEST = star.getNearest(x, y);
-
-	int drawX = BEST->x*kAppWidth;
-	int drawY = (1-BEST->y)*kAppHeight;
-
-	Color8u c = Color8u(100,100,150);
-	drawCircle(dataArray, drawX, drawY, 10,  c);
+	currentX = event.getX()/kAppWidth;
+	currentY = 1-(event.getY()/kAppHeight);
 
 }
 
 void HW04_gonzalrd_KDV2App::keyDown(KeyEvent event){
 	if(event.getCode() == event.KEY_d){
 		
-		drawChangDensity(dataArray, 1000, 7000);
+		drawChangDensity(dataArray, 600, 10000);
 	}
 	 else if(event.getCode() == event.KEY_l){
 		   drawLocs(dataArray);
@@ -268,7 +253,6 @@ void HW04_gonzalrd_KDV2App::keyDown(KeyEvent event){
 		  
 		} 
 	
-
 void HW04_gonzalrd_KDV2App::render(){
 
 	Font ft  = Font("Times new roman",20);
@@ -284,6 +268,14 @@ void HW04_gonzalrd_KDV2App::render(){
 
 void HW04_gonzalrd_KDV2App::update()
 {
+
+	Entry* BEST = star.getNearest(currentX, currentY);
+
+	int drawX = BEST->x*kAppWidth;
+	int drawY = (1-BEST->y)*kAppHeight;
+
+	Color8u c = Color8u(150,150,0);
+	drawCircle(dataArray, drawX, drawY, 10,  c);
 	
 }
 

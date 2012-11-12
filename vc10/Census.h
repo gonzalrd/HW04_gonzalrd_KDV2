@@ -8,6 +8,6 @@ public:
 	double x;
 	double y;
 	double population;
-	double starbucks;
-	double pepPerStar;
+	
+	
 };
