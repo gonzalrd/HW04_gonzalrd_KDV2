@@ -25,7 +25,7 @@ class HW04_gonzalrd_KDV2App : public AppBasic {
 
   public:
 	void setup();
-	//void keyDown(keyDown event);
+	void keyDown(KeyEvent event);
 	void mouseDown( MouseEvent event );	
 	void update();
 	void draw();
@@ -179,10 +179,6 @@ void HW04_gonzalrd_KDV2App::setup()
 
    myLocs = read();   
 
-   //drawChangDensity(dataArray, 500, 3000);
-
-  // drawLocs(dataArray);
-
 	star.build(myLocs,size);
 
 }
@@ -261,13 +257,25 @@ void HW04_gonzalrd_KDV2App::mouseDown( MouseEvent event )
 
 }
 
+void HW04_gonzalrd_KDV2App::keyDown(KeyEvent event){
+	if(event.getCode() == event.KEY_d){
+		
+		drawChangDensity(dataArray, 1000, 7000);
+	}
+	 else if(event.getCode() == event.KEY_l){
+		   drawLocs(dataArray);
+	}
+		  
+		} 
+	
+
 void HW04_gonzalrd_KDV2App::render(){
 
 	Font ft  = Font("Times new roman",20);
 	string ms = "Press d to see density change, l to see all locations and click to get Nearest-but you may need to travel across country or swim";
 	TextBox tbox = TextBox().alignment( TextBox::CENTER ).font(ft).size( tSize.x, tSize.y ).text( ms );
 	tbox.setColor( Color( 0.0f, 0.85f, 1.0f ) );
-	tbox.setBackgroundColor( ColorA( 0.5, 0, 0, 1 ) );
+	tbox.setBackgroundColor( ColorA( 0, 0, 0, 0 ) );
 	Vec2i sz = tbox.measure();
 	console() << "Height: " << sz.y << endl;
 	texture_font_ = gl::Texture( tbox.render() );
