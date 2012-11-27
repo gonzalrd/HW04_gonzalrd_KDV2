@@ -13,9 +13,9 @@ bool gonzalrdStarbucks::compareEntries(Entry*cur, double x , double y){
 	else {return true;}
 	
 }
-
+//-some help from 274 class lecture
 void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
-//handles the left side
+//handles the left side 
 	if(compareEntries(cur->data_, data->x, data->y))
 	{
 	if(xLevel)
@@ -75,6 +75,7 @@ void gonzalrdStarbucks:: buildKD(Node*cur, Entry*data, bool xLevel){
 	}
 
 
+-//-some help from 274 class lecture
 	
  void gonzalrdStarbucks::build(Entry* c, int n){
 //need to pick median and them remove from list
@@ -112,7 +113,7 @@ double gonzalrdStarbucks::calculateDis(Entry*data, double x2, double y2){
 	return  dis;
 }
 
-//Got help from Brandon Harmon
+//Got help from Brandon Harmon -some help from 274 class lecture
 Entry* gonzalrdStarbucks::search(Node*cur, double x , double y, bool xLevel){
 	Entry*candidate;
 	
